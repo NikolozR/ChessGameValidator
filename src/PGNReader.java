@@ -4,7 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class PGNReader {
@@ -46,6 +45,7 @@ public class PGNReader {
                 }
             }
         }
+        games.add(new GameEntry(gameCounter, event, date, white, black, gameMoves.toString()));
     }
 
     private boolean gameInfoPattern(String s, String l) {
