@@ -19,20 +19,24 @@ public class PGNReader {
 
         int gameCounter = 0;
         boolean readingGame = false;
+
         String event = "";
         String date = "";
         String white = "";
         String black = "";
         StringBuilder gameMoves = new StringBuilder();
+
         for (String l : lines) {
             if (readingGame) {
                 if (this.gameInfoPattern("Event", l)) {
                     games.add(new GameEntry(gameCounter, event, date, white, black, gameMoves.toString()));
+                    gameMoves = new StringBuilder();
                     gameCounter++;
                     event = this.getBetweenQuotes(l);
                     readingGame = false;
+                } else {
+                    gameMoves.append(l + " ");
                 }
-                gameMoves.append(l + " ");
             } else {
                 if (this.gameInfoPattern("Event", l)) {
                     event = this.getBetweenQuotes(l);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException {
         PGNReader pgnReader = new PGNReader();
-        pgnReader.extractGames("src/test.pgn");
+        pgnReader.extractGames("src/Tbilisi2015.pgn");
         Tokenizer tokenizer = new Tokenizer();
         for (GameEntry g : pgnReader.getGames()) {
             tokenizer.tokenize(g.getGameNumber(), g.getGameMoves());
