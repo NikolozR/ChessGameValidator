@@ -29,7 +29,9 @@ public class Main {
                 }
             }
             if (errorCount == 0) {
-                System.out.println("No Errors, Valid Syntax");
+                System.out.println("Game had No Errors, Valid Syntax");
+            } else {
+                System.out.println("Game had Errors!");
             }
             System.out.println();
             System.out.println("-----------------------------------------------------------------------------------");

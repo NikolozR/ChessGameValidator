@@ -20,11 +20,11 @@ public class Tokenizer {
             String chunk = matcher.group(2).trim();
             String[] splittedChunk = chunk.split(" ");
             if (splittedChunk.length > 3 || splittedChunk.length < 2 || (splittedChunk.length == 3 && !splittedChunk[2].equals("0-1") && !splittedChunk[2].equals("1-0") && !splittedChunk[2].equals("1/2-1/2"))) {
-                GameMove currentGameMove = new GameMove(Integer.parseInt(number), "On each step of the game there should be 2 moves, here it was " + splittedChunk.length);
+                GameMove currentGameMove = new GameMove(Integer.parseInt(number), "Game Move " + number + ": " + "On each step of the game there should be 2 moves, here it was " + splittedChunk.length);
                 currentGame.add(currentGameMove);
             } else {
-                SinglePlayerMove whiteMove = new SinglePlayerMove(PlayerColor.WHITE, splittedChunk[0]);
-                SinglePlayerMove blackMove = new SinglePlayerMove(PlayerColor.BLACK, splittedChunk[1]);
+                SinglePlayerMove whiteMove = new SinglePlayerMove(Integer.parseInt(number), PlayerColor.WHITE, splittedChunk[0]);
+                SinglePlayerMove blackMove = new SinglePlayerMove(Integer.parseInt(number), PlayerColor.BLACK, splittedChunk[1]);
                 GameMove currentGameMove = new GameMove(Integer.parseInt(number), whiteMove, blackMove);
                 currentGame.add(currentGameMove);
             }
