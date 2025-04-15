@@ -5,6 +5,7 @@ public class GameMove {
     private final SinglePlayerMove blacksMove;
     private boolean validLength = true;
     private String errorStatusText;
+    private int lastMove;
 
     public GameMove(int moveNumber, SinglePlayerMove whitesMove, SinglePlayerMove blacksMove) {
         this.moveNumber = moveNumber;
@@ -42,5 +43,17 @@ public class GameMove {
 
     public String getErrorStatusText() {
         return errorStatusText;
+    }
+
+    public int getLastMove() {
+        return lastMove;
+    }
+
+    public void setLastMove(int lastMove) {
+        this.lastMove = lastMove;
+        if (whitesMove != null && blacksMove != null) {
+            whitesMove.setLastMove(lastMove);
+            blacksMove.setLastMove(lastMove);
+        }
     }
 }
