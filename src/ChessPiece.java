@@ -2,13 +2,19 @@ public class ChessPiece implements ChessPieceI {
     private boolean taken;
     private ChessBoardSquare pieceSquare;
     private final GameColor pieceColor;
+    private final ChessBoard chessboard;
 
 
-    public ChessPiece(GameColor pieceColor) {
+    public ChessPiece(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessboard) {
         this.pieceColor = pieceColor;
+        this.pieceSquare = pieceSquare;
         this.taken = false;
+        this.chessboard = chessboard;
     }
 
+    public ChessBoard getChessboard() {
+        return chessboard;
+    }
 
     public GameColor getPieceColor() {
         return pieceColor;

@@ -1,14 +1,22 @@
 public class Pawn extends ChessPiece {
     private boolean hasMoved;
 
-    public Pawn(GameColor pieceColor) {
-        super(pieceColor);
+    public Pawn(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessBoard) {
+        super(pieceColor, pieceSquare, chessBoard);
+        this.hasMoved = false;
     }
 
 
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
-
+        if (this.isCorrectMove(destinationSquare, taking)) {
+            if (taking) {
+                destinationSquare.takesCurrentPiece(this);
+            } else {
+                destinationSquare.regularMove(this);
+            }
+            this.setHasMoved(true);
+        }
     }
 
     @Override
@@ -31,7 +39,7 @@ public class Pawn extends ChessPiece {
             if (this.getPieceColor() == GameColor.WHITE) {
                 return this.canWhitePawnTake(destinationSquare);
             } else {
-                return this.canWhitePawnTake(destinationSquare);
+                return this.canBlackPawnTake(destinationSquare);
             }
         }
     }
@@ -83,10 +91,6 @@ public class Pawn extends ChessPiece {
                 &&
                 (destinationSquare.getRank() + 1 == this.getPieceSquare().getRank()
                         || destinationSquare.getRank() + 2 == this.getPieceSquare().getRank());
-    }
-
-    public boolean isHasMoved() {
-        return hasMoved;
     }
 
     public void setHasMoved(boolean hasMoved) {

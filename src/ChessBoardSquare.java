@@ -1,16 +1,29 @@
 public class ChessBoardSquare {
     private ChessPiece currentPiece;
     private final String coordinates;
+    private final ChessBoard chessBoard;
 
 
-    public ChessBoardSquare(String coordinates) {
+    public ChessBoardSquare(String coordinates, ChessBoard chessBoard) {
         this.coordinates = coordinates;
         this.currentPiece = null;
+        this.chessBoard = chessBoard;
     }
 
-    public ChessBoardSquare(ChessPiece currentPiece, String coordinates) {
-        this.currentPiece = currentPiece;
-        this.coordinates = coordinates;
+    public void takesCurrentPiece(ChessPiece newCurrentPiece) {
+        this.getCurrentPiece().setPieceSquare(null);
+        this.getCurrentPiece().setTaken(true);
+        if (this.getCurrentPiece().getPieceColor() == GameColor.WHITE) {
+            this.chessBoard.addWhiteTooks(this.getCurrentPiece());
+        } else {
+            this.chessBoard.addWBlackTooks(this.getCurrentPiece());
+        }
+        this.regularMove(newCurrentPiece);
+    }
+
+    public void regularMove(ChessPiece newCurrentPiece) {
+        this.setCurrentPiece(null);
+        this.setCurrentPiece(newCurrentPiece);
     }
 
 
@@ -31,7 +44,7 @@ public class ChessBoardSquare {
     }
 
     public int getFileCharCode() {
-        return (int) this.getCoordinates().charAt(0);
+        return this.getCoordinates().charAt(0);
     }
 
     public String getCoordinates() {
