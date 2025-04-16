@@ -24,8 +24,8 @@ public class Tokenizer {
                 GameMove currentGameMove = new GameMove(number, "Game Move " + number + ": " + "On each step of the game there should be 2 moves, here it was " + splittedChunk.length);
                 currentGame.add(currentGameMove);
             } else {
-                SinglePlayerMove whiteMove = new SinglePlayerMove(number, PlayerColor.WHITE, splittedChunk[0]);
-                SinglePlayerMove blackMove = new SinglePlayerMove(number, PlayerColor.BLACK, splittedChunk[1]);
+                SinglePlayerMove whiteMove = new SinglePlayerMove(number, GameColor.WHITE, splittedChunk[0]);
+                SinglePlayerMove blackMove = new SinglePlayerMove(number, GameColor.BLACK, splittedChunk[1]);
                 GameMove currentGameMove = new GameMove(number, whiteMove, blackMove);
                 currentGame.add(currentGameMove);
             }
