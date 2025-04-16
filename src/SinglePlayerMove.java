@@ -2,7 +2,7 @@ import java.util.regex.Pattern;
 
 public class SinglePlayerMove {
     // Needs only promotions and weird rule of pawns taking
-    public static final Pattern LEGAL_CHESS_MOVE = Pattern.compile("^((O-O(-O)?)|([KQRBN][a-h]?[1-8]?x?[a-h][1-8])|([a-h][1-8])|([a-h]x[a-h][1-8])|)(\\+|#)?$");
+    public static final Pattern LEGAL_CHESS_MOVE = Pattern.compile("^((O-O(-O)?)|([KQRBN][a-h]?[1-8]?x?[a-h][1-8])|([a-h][1-8](=[QRBN])?)|([a-h]x[a-h][1-8](=[QRBN])?)|)(\\+|#)?$");
 
     private final int gameMoveNumber;
     private final PlayerColor playerColor;
