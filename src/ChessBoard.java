@@ -14,6 +14,8 @@ public class ChessBoard {
     private final ArrayList<Knight> blackKnights = new ArrayList<>();
     private Queen whiteQueen;
     private Queen blackQueen;
+    private King whiteKing;
+    private King blackKing;
 
 
     public ChessBoard() {
@@ -46,7 +48,10 @@ public class ChessBoard {
                         if (rank == 8) this.setBlackQueen(queen);
                         cbs.setCurrentPiece(queen);
                     } else {
-                        // king
+                        King king = new King(rank == 1 ? GameColor.WHITE : GameColor.BLACK, cbs, this);
+                        if (rank == 1) this.setWhiteKing(king);
+                        if (rank == 8) this.setBlackKing(king);
+                        cbs.setCurrentPiece(king);
                     }
                 } else if (rank == 2) {
                     // white pawns no matter what is file
@@ -64,9 +69,6 @@ public class ChessBoard {
         }
     }
 
-    public ChessBoardSquare[][] getBoardSquares() {
-        return boardSquares;
-    }
 
     public void addWhiteTooks(ChessPiece whiteTook) {
         this.whitesTook.add(whiteTook);
@@ -77,27 +79,118 @@ public class ChessBoard {
     }
 
     public boolean playMove(String move, GameColor player) {
-        ChessBoardSquare destinationSquare = new ChessBoardSquare(move, this);
-        if (move.length() == 2) {
-            int pawnMoveCounts = 0;
-            Pawn currentPawn = null;
-            for (Pawn pawn : player == GameColor.WHITE ? this.getWhitePawns() : this.getBlackPawns()) {
-                boolean moved = pawn.isCorrectMove(destinationSquare, false);
-                if (moved) {
-                    pawnMoveCounts++;
-                    currentPawn = pawn;
-                }
-            }
-            if (pawnMoveCounts == 1) {
-                currentPawn.move(destinationSquare, false);
-                return true;
-            }
-        } else if (move.length() == 3) {
-
+        if (move.length() == 2) return this.regularPawnMove(move, player);
+        else if (move.length() == 3) {
+            char firstChar = move.charAt(0);
+            if (firstChar == 'N') return this.regularKnightMove(move, player);
+            else if (firstChar == 'R') return this.regularRookMove(move, player);
+            else if (firstChar == 'B') return this.regularBishopMove(move, player);
+            else if (firstChar == 'Q') return this.regularQueenMove(move, player);
+            else if (firstChar == 'K') return this.regularKingMove(move, player);
+            return false;
         }
         return false;
     }
 
+    private boolean regularPawnMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move, this);
+        int pawnMoveCounts = 0;
+        Pawn currentPawn = null;
+        for (Pawn pawn : player == GameColor.WHITE ? this.getWhitePawns() : this.getBlackPawns()) {
+            boolean willMove = pawn.isCorrectMove(destinationSquare, false);
+            if (willMove) {
+                pawnMoveCounts++;
+                currentPawn = pawn;
+            }
+        }
+        if (pawnMoveCounts == 1) {
+            System.out.println("MOVED PAWN " + currentPawn.getPieceSquare().getCoordinates());
+            currentPawn.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean regularKnightMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move.substring(1), this);
+        int knightMoveCounts = 0;
+        Knight currentKnight = null;
+        for (Knight knight : player == GameColor.WHITE ? this.getWhiteKnights() : this.getBlackKnights()) {
+            boolean willMove = knight.isCorrectMove(destinationSquare, false);
+            if (willMove) {
+                knightMoveCounts++;
+                currentKnight = knight;
+            }
+        }
+        if (knightMoveCounts == 1) {
+            currentKnight.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean regularRookMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move.substring(1), this);
+        int rookMoveCounts = 0;
+        Rook currentRook = null;
+        for (Rook rook : player == GameColor.WHITE ? this.getWhiteRooks() : this.getBlackRooks()) {
+            boolean willMove = rook.isCorrectMove(destinationSquare, false);
+            if (willMove) {
+                rookMoveCounts++;
+                currentRook = rook;
+            }
+        }
+        if (rookMoveCounts == 1) {
+            currentRook.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean regularBishopMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move.substring(1), this);
+        int bishopMoveCounts = 0;
+        Bishop currentBishop = null;
+        for (Bishop bishop : player == GameColor.WHITE ? this.getWhiteBishops() : this.getBlackBishops()) {
+            boolean willMove = bishop.isCorrectMove(destinationSquare, false);
+            if (willMove) {
+                bishopMoveCounts++;
+                currentBishop = bishop;
+            }
+        }
+        if (bishopMoveCounts == 1) {
+            currentBishop.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean regularQueenMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move.substring(1), this);
+        Queen queen = player == GameColor.WHITE ? this.getWhiteQueen() : this.getBlackQueen();
+        boolean willMove = queen.isCorrectMove(destinationSquare, false);
+        if (willMove) {
+            queen.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean regularKingMove(String move, GameColor player) {
+        ChessBoardSquare destinationSquare = new ChessBoardSquare(move.substring(1), this);
+        King king = player == GameColor.WHITE ? this.getWhiteKing() : this.getBlackKing();
+        boolean willMove = king.isCorrectMove(destinationSquare, false);
+        if (willMove) {
+            king.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+
+    public ChessBoardSquare[][] getBoardSquares() {
+        return boardSquares;
+    }
 
     public Queen getBlackQueen() {
         return blackQueen;
@@ -153,5 +246,21 @@ public class ChessBoard {
 
     public void setWhiteQueen(Queen whiteQueen) {
         this.whiteQueen = whiteQueen;
+    }
+
+    public void setBlackKing(King blackKing) {
+        this.blackKing = blackKing;
+    }
+
+    public void setWhiteKing(King whiteKing) {
+        this.whiteKing = whiteKing;
+    }
+
+    public King getBlackKing() {
+        return blackKing;
+    }
+
+    public King getWhiteKing() {
+        return whiteKing;
     }
 }

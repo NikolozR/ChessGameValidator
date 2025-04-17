@@ -24,7 +24,6 @@ public class Bishop extends ChessPiece {
             int fileDiff = Math.abs(destinationFileIndex - currentFileIndex);
 
             if (rankDiff != fileDiff) return false;
-
             int rankStep = currentRankIndex > destinationRankIndex ? -1 : 1;
             int fileStep = currentFileIndex > destinationFileIndex ? -1 : 1;
 
@@ -33,8 +32,9 @@ public class Bishop extends ChessPiece {
 
             while (rank != destinationRankIndex && file != destinationFileIndex) {
                 ChessBoardSquare intermediate = this.getChessboard().getBoardSquares()[rank][file];
-                if (intermediate.getCurrentPiece() != null) return false;
-
+                if (intermediate.getCurrentPiece() != null) {
+                    return false;
+                }
                 rank += rankStep;
                 file += fileStep;
             }

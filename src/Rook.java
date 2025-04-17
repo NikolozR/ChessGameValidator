@@ -12,6 +12,7 @@ public class Rook extends ChessPiece {
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
         if (this.isCorrectMove(destinationSquare, taking)) {
+            this.getPieceSquare().setCurrentPiece(null);
             if (taking) {
                 destinationSquare.takesCurrentPiece(this);
             } else {
