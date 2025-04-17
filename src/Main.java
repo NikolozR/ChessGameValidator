@@ -4,8 +4,9 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException {
         PGNReader pgnReader = new PGNReader();
-        pgnReader.extractGames("src/Tbilisi2015.pgn");
+        pgnReader.extractGames("src/test.pgn");
         Tokenizer tokenizer = new Tokenizer();
+        Simulation simulation = new Simulation();
         for (GameEntry g : pgnReader.getGames()) {
             tokenizer.tokenize(g.getGameNumber(), g.getGameMoves());
         }
@@ -29,6 +30,7 @@ public class Main {
                 }
             }
             if (errorCount == 0) {
+                simulation.addValidGameHistories(g.getGameNumber(), currentGame);
                 System.out.println("Game had No Errors, Valid Syntax");
             } else {
                 System.out.println("Game had Errors!");
@@ -37,6 +39,7 @@ public class Main {
             System.out.println("-----------------------------------------------------------------------------------");
             System.out.println();
         }
+        simulation.simulate();
 
 
 //        for (GameEntry g : pgnReader.getGames()) {

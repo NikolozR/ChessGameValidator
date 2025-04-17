@@ -16,7 +16,7 @@ public class ChessBoardSquare {
         if (this.getCurrentPiece().getPieceColor() == GameColor.WHITE) {
             this.chessBoard.addWhiteTooks(this.getCurrentPiece());
         } else {
-            this.chessBoard.addWBlackTooks(this.getCurrentPiece());
+            this.chessBoard.addBlackTooks(this.getCurrentPiece());
         }
         this.regularMove(newCurrentPiece);
     }
