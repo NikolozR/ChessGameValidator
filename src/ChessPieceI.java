@@ -3,5 +3,5 @@ public interface ChessPieceI {
 
     boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking);
 
-
+    boolean canTake(ChessBoardSquare destinationSquare, GameColor currentColor);
 }

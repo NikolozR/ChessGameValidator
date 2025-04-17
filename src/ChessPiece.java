@@ -38,13 +38,24 @@ public class ChessPiece implements ChessPieceI {
 
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
-
+        if (this.isCorrectMove(destinationSquare, taking)) {
+            if (taking) {
+                destinationSquare.takesCurrentPiece(this);
+            } else {
+                destinationSquare.regularMove(this);
+            }
+        }
     }
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+        System.out.println("DEBUGGER TO CHECK IF USED: INCORRECT");
         return false;
     }
 
-
+    @Override
+    public boolean canTake(ChessBoardSquare destinationSquare, GameColor currentColor) {
+        // add that it is not King
+        return !destinationSquare.isSquareEmpty() && destinationSquare.getCurrentPiece().getPieceColor() != currentColor;
+    }
 }

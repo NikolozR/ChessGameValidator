@@ -31,7 +31,7 @@ public class ChessBoardSquare {
         return currentPiece;
     }
 
-    public boolean isSquareEmpy() {
+    public boolean isSquareEmpty() {
         return this.getCurrentPiece() == null;
     }
 

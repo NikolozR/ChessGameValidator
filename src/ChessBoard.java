@@ -18,7 +18,8 @@ public class ChessBoard {
                         Rook rook = new Rook(rank == 1 ? GameColor.WHITE : GameColor.BLACK, cbs, this);
                         cbs.setCurrentPiece(rook);
                     } else if (file == 'b' || file == 'g') {
-                        // knight
+                        Knight knight = new Knight(rank == 1 ? GameColor.WHITE : GameColor.BLACK, cbs, this);
+                        cbs.setCurrentPiece(knight);
                     } else if (file == 'c' || file == 'f') {
                         // bishop
                     } else if (file == 'd') {

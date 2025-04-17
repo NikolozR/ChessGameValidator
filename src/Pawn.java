@@ -45,10 +45,8 @@ public class Pawn extends ChessPiece {
     }
 
 
-    // Todo for all moves: if they open mate to their king, ILLEGAL MOVE
-    // Todo for taking, can not take square where other king is placed
     private boolean canWhitePawnTake(ChessBoardSquare destinationSquare) {
-        return !destinationSquare.isSquareEmpy()
+        return !destinationSquare.isSquareEmpty()
                 && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.BLACK
                 && destinationSquare.getRank() - 1 == this.getPieceSquare().getRank()
                 && (destinationSquare.getFileCharCode() - 1 == this.getPieceSquare().getFileCharCode()
@@ -57,7 +55,7 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canBlackPawnTake(ChessBoardSquare destinationSquare) {
-        return !destinationSquare.isSquareEmpy()
+        return !destinationSquare.isSquareEmpty()
                 && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.BLACK
                 && destinationSquare.getRank() - 1 == this.getPieceSquare().getRank()
                 && (destinationSquare.getFileCharCode() - 1 == this.getPieceSquare().getFileCharCode()
@@ -66,13 +64,13 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canWhitePawnMoveAfterFirstMove(ChessBoardSquare destinationSquare) {
-        return destinationSquare.isSquareEmpy()
+        return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 && destinationSquare.getRank() - 1 == this.getPieceSquare().getRank();
     }
 
     private boolean canWhitePawnMoveFirstMove(ChessBoardSquare destinationSquare) {
-        return destinationSquare.isSquareEmpy()
+        return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 &&
                 (destinationSquare.getRank() - 1 == this.getPieceSquare().getRank()
@@ -80,13 +78,13 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canBlackPawnMoveAfterFirstMove(ChessBoardSquare destinationSquare) {
-        return destinationSquare.isSquareEmpy()
+        return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 && destinationSquare.getRank() + 1 == this.getPieceSquare().getRank();
     }
 
     private boolean canBlackPawnMoveFirstMove(ChessBoardSquare destinationSquare) {
-        return destinationSquare.isSquareEmpy()
+        return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 &&
                 (destinationSquare.getRank() + 1 == this.getPieceSquare().getRank()
