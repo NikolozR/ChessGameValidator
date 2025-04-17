@@ -87,7 +87,7 @@ public class ChessBoard {
             else if (firstChar == 'B') return this.regularBishopMove(move, player);
             else if (firstChar == 'Q') return this.regularQueenMove(move, player);
             else if (firstChar == 'K') return this.regularKingMove(move, player);
-            return false;
+            else if (move.equals("O-O") || move.equals("O-O-O")) return this.castlingKingMove(move, player);
         }
         return false;
     }
@@ -104,7 +104,6 @@ public class ChessBoard {
             }
         }
         if (pawnMoveCounts == 1) {
-            System.out.println("MOVED PAWN " + currentPawn.getPieceSquare().getCoordinates());
             currentPawn.move(destinationSquare, false);
             return true;
         }
@@ -182,6 +181,16 @@ public class ChessBoard {
         boolean willMove = king.isCorrectMove(destinationSquare, false);
         if (willMove) {
             king.move(destinationSquare, false);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean castlingKingMove(String castlingType, GameColor player) {
+        King king = player == GameColor.WHITE ? this.getWhiteKing() : this.getBlackKing();
+        boolean willMove = king.isCorrectMove(castlingType);
+        if (willMove) {
+            king.move(castlingType);
             return true;
         }
         return false;

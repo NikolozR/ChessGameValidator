@@ -76,4 +76,8 @@ public class Rook extends ChessPiece {
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
+
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
 }

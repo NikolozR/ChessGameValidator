@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 public class Simulation {
     private final HashMap<Integer, ArrayList<GameMove>> tokenizedGameHistory;
-    private final ChessBoard board;
+    private ChessBoard board;
 
     public Simulation() {
         this.tokenizedGameHistory = new HashMap<>();
@@ -20,11 +20,18 @@ public class Simulation {
 
     public void simulate() {
         tokenizedGameHistory.forEach((key, val) -> {
-            this.simulateSingleGame(val);
+            try {
+                this.simulateSingleGame(key, val);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                System.out.println("Moving on the next game...");
+                this.setBoard(new ChessBoard());
+            }
         });
+
     }
 
-    public void simulateSingleGame(ArrayList<GameMove> game) {
+    public void simulateSingleGame(int gameNumber, ArrayList<GameMove> game) {
         int erroredMoveNumber = 0;
         GameColor erroredColor = GameColor.BLACK;
         int goal = game.size();
@@ -40,17 +47,20 @@ public class Simulation {
             boolean blackMoved = this.getBoard().playMove(gm.getBlacksMove().getMove(), GameColor.BLACK);
             if (!blackMoved) {
                 erroredMoveNumber = gm.getMoveNumber();
-                erroredColor = GameColor.BLACK;
                 break;
             }
             moveCount++;
         }
         if (goal != moveCount)
-            throw new SimulationGameError("Game Had Error. Move Number: " + erroredMoveNumber + ". Player that had error: " + erroredColor);
+            throw new SimulationGameError("Game #" + gameNumber + " Had Error. Move Number: " + erroredMoveNumber + ". Player that had error: " + erroredColor);
     }
 
 
     public ChessBoard getBoard() {
         return board;
+    }
+
+    public void setBoard(ChessBoard board) {
+        this.board = board;
     }
 }
