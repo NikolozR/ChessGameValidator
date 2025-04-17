@@ -9,7 +9,7 @@ public class ChessBoard {
         boardSquares = new ChessBoardSquare[8][8];
         for (int i = 0; i < boardSquares.length; i++) {
             for (int k = 0; k < boardSquares[0].length; k++) {
-                int rank = 8 - i;
+                int rank = i + 1;
                 char file = (char) (k + 97);
                 ChessBoardSquare cbs = new ChessBoardSquare(file + "" + rank, this);
                 if (rank == 1 || rank == 8) {

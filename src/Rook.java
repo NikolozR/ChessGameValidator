@@ -43,11 +43,12 @@ public class Rook extends ChessPiece {
     }
 
     private boolean canMoveVertically(ChessBoardSquare destinationSquare) {
-        int currentRank = 8 - this.getPieceSquare().getRank();
-        int destinationRank = 8 - destinationSquare.getRank();
+        int currentRankIndex = this.getPieceSquare().getRank() - 1;
+        int destinationRankIndex = destinationSquare.getRank() - 1;
         int fileIndex = destinationSquare.getFileCharCode() - 97;
-        for (int i = Math.min(currentRank, destinationRank); i < Math.max(currentRank, destinationRank); i++) {
-            if (this.getChessboard().getBoardSquares()[i][fileIndex] != null) {
+        for (int i = Math.min(currentRankIndex, destinationRankIndex); i < Math.max(currentRankIndex, destinationRankIndex); i++) {
+            ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
+            if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
                 // something was in a way of Rook
                 return false;
             }
@@ -57,11 +58,12 @@ public class Rook extends ChessPiece {
     }
 
     private boolean canMoveHorizontally(ChessBoardSquare destinationSquare) {
-        int rankIndex = 8 - destinationSquare.getRank();
+        int rankIndex = destinationSquare.getRank() - 1;
         int currentFile = this.getPieceSquare().getFileCharCode() - 97;
         int destinationFile = destinationSquare.getFileCharCode() - 97;
-        for (int i = Math.min(currentFile, destinationFile); i < Math.max(currentFile, destinationFile); i++) {
-            if (this.getChessboard().getBoardSquares()[rankIndex][i] != null) {
+        for (int i = Math.min(currentFile, destinationFile) + 1; i < Math.max(currentFile, destinationFile); i++) {
+            ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[rankIndex][i];
+            if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
                 // something was in a way of Rook
                 return false;
             }
