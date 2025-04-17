@@ -11,7 +11,14 @@ public class Rook extends ChessPiece {
 
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
-        super.move(destinationSquare, taking);
+        if (this.isCorrectMove(destinationSquare, taking)) {
+            if (taking) {
+                destinationSquare.takesCurrentPiece(this);
+            } else {
+                destinationSquare.regularMove(this);
+            }
+            this.setHasMoved(true);
+        }
     }
 
     @Override
@@ -30,10 +37,10 @@ public class Rook extends ChessPiece {
     }
 
     private boolean canMoveVertically(ChessBoardSquare destinationSquare) {
-        int currentRank = this.getPieceSquare().getRank();
-        int destinationRank = destinationSquare.getRank();
+        int currentRank = 8 - this.getPieceSquare().getRank();
+        int destinationRank = 8 - destinationSquare.getRank();
         int fileIndex = destinationSquare.getFileCharCode() - 97;
-        for (int i = 8 - (Math.max(currentRank, destinationRank)); i < 8 - Math.min(currentRank, destinationRank); i++) {
+        for (int i = Math.min(currentRank, destinationRank); i < Math.max(currentRank, destinationRank); i++) {
             if (this.getChessboard().getBoardSquares()[i][fileIndex] != null) {
                 // something was in a way of Rook
                 return false;
@@ -43,13 +50,12 @@ public class Rook extends ChessPiece {
         return true;
     }
 
-    // todo make sure correct logic, currently copied version of vertical logic
     private boolean canMoveHorizontally(ChessBoardSquare destinationSquare) {
-        int currentRank = this.getPieceSquare().getRank();
-        int destinationRank = destinationSquare.getRank();
-        int fileIndex = destinationSquare.getFileCharCode() - 97;
-        for (int i = 8 - (Math.max(currentRank, destinationRank)); i < 8 - Math.min(currentRank, destinationRank); i++) {
-            if (this.getChessboard().getBoardSquares()[i][fileIndex] != null) {
+        int rankIndex = 8 - destinationSquare.getRank();
+        int currentFile = this.getPieceSquare().getFileCharCode() - 97;
+        int destinationFile = destinationSquare.getFileCharCode() - 97;
+        for (int i = Math.min(currentFile, destinationFile); i < Math.max(currentFile, destinationFile); i++) {
+            if (this.getChessboard().getBoardSquares()[rankIndex][i] != null) {
                 // something was in a way of Rook
                 return false;
             }
@@ -58,4 +64,7 @@ public class Rook extends ChessPiece {
         return true;
     }
 
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
 }

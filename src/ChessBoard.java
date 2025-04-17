@@ -13,9 +13,10 @@ public class ChessBoard {
                 char file = (char) (k + 97);
                 ChessBoardSquare cbs = new ChessBoardSquare(file + "" + rank, this);
                 if (rank == 1 || rank == 8) {
-                    // whites or blacks depends on rank
+                    // if rank is 1 --> white piece, if not then rank == 8 so black piece
                     if (file == 'a' || file == 'h') {
-                        // cbs.setCurrentPiece(new Rook)
+                        Rook rook = new Rook(rank == 1 ? GameColor.WHITE : GameColor.BLACK, cbs, this);
+                        cbs.setCurrentPiece(rook);
                     } else if (file == 'b' || file == 'g') {
                         // knight
                     } else if (file == 'c' || file == 'f') {
@@ -27,10 +28,12 @@ public class ChessBoard {
                     }
                 } else if (rank == 2) {
                     // white pawns no matter what is file
-                    cbs.setCurrentPiece(new Pawn(GameColor.WHITE, cbs, this));
+                    Pawn whitePawn = new Pawn(GameColor.WHITE, cbs, this);
+                    cbs.setCurrentPiece(whitePawn);
                 } else if (rank == 7) {
                     // black pawns no matter what is file
-                    cbs.setCurrentPiece(new Pawn(GameColor.BLACK, cbs, this));
+                    Pawn blackPawn = new Pawn(GameColor.BLACK, cbs, this);
+                    cbs.setCurrentPiece(blackPawn);
                 }
                 boardSquares[i][k] = cbs;
             }
