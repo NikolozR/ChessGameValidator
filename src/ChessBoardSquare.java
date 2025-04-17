@@ -24,6 +24,7 @@ public class ChessBoardSquare {
     public void regularMove(ChessPiece newCurrentPiece) {
         this.setCurrentPiece(null);
         this.setCurrentPiece(newCurrentPiece);
+        newCurrentPiece.setPieceSquare(this);
     }
 
 
