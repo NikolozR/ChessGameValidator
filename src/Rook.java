@@ -29,9 +29,10 @@ public class Rook extends ChessPiece {
             return false;
         } else if (this.getPieceSquare().getFile() == destinationSquare.getFile()) {
             // if taking, then canTake should be true with also moving true
-            if (taking)
+            if (taking) {
                 return this.canTake(destinationSquare, this.getPieceColor()) && this.canMoveVertically(destinationSquare);
-                // if not taking then destination should be empty
+            }
+            // if not taking then destination should be empty
             else return destinationSquare.isSquareEmpty() && this.canMoveVertically(destinationSquare);
         } else if (this.getPieceSquare().getRank() == destinationSquare.getRank()) {
             if (taking)

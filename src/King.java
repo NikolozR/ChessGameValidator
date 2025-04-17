@@ -15,28 +15,36 @@ public class King extends ChessPiece {
                     ChessBoardSquare squareh1 = this.getChessboard().getBoardSquares()[0][7];
                     this.getChessboard().getBoardSquares()[0][5].setCurrentPiece(squareh1.getCurrentPiece());
                     ((Rook) squareh1.getCurrentPiece()).setHasMoved(true);
+                    squareh1.getCurrentPiece().setPieceSquare(this.getChessboard().getBoardSquares()[0][5]);
                     squareh1.setCurrentPiece(null);
                     this.getChessboard().getBoardSquares()[0][6].setCurrentPiece(this);
+                    this.setPieceSquare(this.getChessboard().getBoardSquares()[0][6]);
                 } else {
                     ChessBoardSquare squareh8 = this.getChessboard().getBoardSquares()[7][7];
                     this.getChessboard().getBoardSquares()[7][5].setCurrentPiece(squareh8.getCurrentPiece());
                     ((Rook) squareh8.getCurrentPiece()).setHasMoved(true);
+                    squareh8.getCurrentPiece().setPieceSquare(this.getChessboard().getBoardSquares()[7][5]);
                     squareh8.setCurrentPiece(null);
                     this.getChessboard().getBoardSquares()[7][6].setCurrentPiece(this);
+                    this.setPieceSquare(this.getChessboard().getBoardSquares()[7][6]);
                 }
             } else {
                 if (this.getPieceColor() == GameColor.WHITE) {
                     ChessBoardSquare squarea1 = this.getChessboard().getBoardSquares()[0][0];
                     this.getChessboard().getBoardSquares()[0][3].setCurrentPiece(squarea1.getCurrentPiece());
                     ((Rook) squarea1.getCurrentPiece()).setHasMoved(true);
+                    squarea1.getCurrentPiece().setPieceSquare(this.getChessboard().getBoardSquares()[0][3]);
                     squarea1.setCurrentPiece(null);
                     this.getChessboard().getBoardSquares()[0][2].setCurrentPiece(this);
+                    this.setPieceSquare(this.getChessboard().getBoardSquares()[0][2]);
                 } else {
                     ChessBoardSquare squarea8 = this.getChessboard().getBoardSquares()[7][0];
                     this.getChessboard().getBoardSquares()[7][3].setCurrentPiece(squarea8.getCurrentPiece());
                     ((Rook) squarea8.getCurrentPiece()).setHasMoved(true);
+                    squarea8.getCurrentPiece().setPieceSquare(this.getChessboard().getBoardSquares()[7][3]);
                     squarea8.setCurrentPiece(null);
                     this.getChessboard().getBoardSquares()[7][2].setCurrentPiece(this);
+                    this.setPieceSquare(this.getChessboard().getBoardSquares()[7][2]);
                 }
             }
         }
@@ -75,7 +83,7 @@ public class King extends ChessPiece {
                 for (int i = 5; i < 7; i++) {
                     if (!this.getChessboard().getBoardSquares()[0][i].isSquareEmpty()) return false;
                 }
-                if (squareh1.isSquareEmpty() || !(squareh1.getCurrentPiece() instanceof Rook))
+                if (squareh1.isSquareEmpty() || !(squareh1.getCurrentPiece() instanceof Rook) || squareh1.getCurrentPiece().isTaken())
                     return false;
                 else return !((Rook) squareh1.getCurrentPiece()).isHasMoved();
             } else {
@@ -83,7 +91,7 @@ public class King extends ChessPiece {
                 for (int i = 5; i < 7; i++) {
                     if (!this.getChessboard().getBoardSquares()[7][i].isSquareEmpty()) return false;
                 }
-                if (squareh8.isSquareEmpty() || !(squareh8.getCurrentPiece() instanceof Rook))
+                if (squareh8.isSquareEmpty() || !(squareh8.getCurrentPiece() instanceof Rook) || squareh8.getCurrentPiece().isTaken())
                     return false;
                 else return !((Rook) squareh8.getCurrentPiece()).isHasMoved();
             }
@@ -93,7 +101,7 @@ public class King extends ChessPiece {
                 for (int i = 1; i < 4; i++) {
                     if (!this.getChessboard().getBoardSquares()[0][i].isSquareEmpty()) return false;
                 }
-                if (squarea1.isSquareEmpty() || !(squarea1.getCurrentPiece() instanceof Rook))
+                if (squarea1.isSquareEmpty() || !(squarea1.getCurrentPiece() instanceof Rook) || squarea1.getCurrentPiece().isTaken())
                     return false;
                 else return !((Rook) squarea1.getCurrentPiece()).isHasMoved();
             } else {
@@ -101,7 +109,7 @@ public class King extends ChessPiece {
                 for (int i = 1; i < 4; i++) {
                     if (!this.getChessboard().getBoardSquares()[7][i].isSquareEmpty()) return false;
                 }
-                if (squarea8.isSquareEmpty() || !(squarea8.getCurrentPiece() instanceof Rook))
+                if (squarea8.isSquareEmpty() || !(squarea8.getCurrentPiece() instanceof Rook) || squarea8.getCurrentPiece().isTaken())
                     return false;
                 else return !((Rook) squarea8.getCurrentPiece()).isHasMoved();
             }

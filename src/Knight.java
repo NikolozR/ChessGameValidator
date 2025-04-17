@@ -8,8 +8,9 @@ public class Knight extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
-        if (taking) return this.canTake(destinationSquare, this.getPieceColor()) && this.canMove(destinationSquare);
-        else return destinationSquare.isSquareEmpty() && this.canMove(destinationSquare);
+        if (taking) {
+            return this.canTake(destinationSquare, this.getPieceColor()) && this.canMove(destinationSquare);
+        } else return destinationSquare.isSquareEmpty() && this.canMove(destinationSquare);
     }
 
     private boolean canMove(ChessBoardSquare destinationSquare) {
@@ -20,7 +21,9 @@ public class Knight extends ChessPiece {
             int currentRank = this.getPieceSquare().getRank();
             int destinationFile = destinationSquare.getFileCharCode();
             int destinationRank = destinationSquare.getRank();
-            return Math.abs(destinationFile - currentFile) == 1 && Math.abs(currentRank - destinationRank) == 2;
+            return (Math.abs(destinationFile - currentFile) == 1 && Math.abs(currentRank - destinationRank) == 2)
+                    || (Math.abs(destinationFile - currentFile) == 2 && Math.abs(currentRank - destinationRank) == 1);
+
         }
     }
 }
