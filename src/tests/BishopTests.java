@@ -62,5 +62,6 @@ public class BishopTests {
 
         assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("c2"), false), "Bishop should not move vertically");
         assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("d1"), false), "Bishop should not move in non-diagonal patterns");
+        assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("d9"), false), "Bishop should not move out of board");
     }
 }

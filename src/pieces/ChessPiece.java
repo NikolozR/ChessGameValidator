@@ -70,6 +70,16 @@ public class ChessPiece implements ChessPieceI {
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
         System.out.println("DEBUGGER TO CHECK IF USED: INCORRECT");
         return false;
+
+    }
+
+    public boolean isValid(ChessBoardSquare destinationSquare) {
+        if (destinationSquare == null) return false;
+        int rank = Integer.parseInt(destinationSquare.getCoordinates().substring(1));
+        int file = destinationSquare.getCoordinates().charAt(0) - 97;
+        if (rank > 8 || rank < 0) return false;
+        if (file < 0 || file > 7) return false;
+        return true;
     }
 
     @Override

@@ -66,7 +66,7 @@ public class King extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
-
+        if (!isValid(destinationSquare)) return false;
         int currentRank = this.getPieceSquare().getRank();
         int currentFile = this.getPieceSquare().getFileCharCode();
 

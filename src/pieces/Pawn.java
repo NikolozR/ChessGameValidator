@@ -33,6 +33,7 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+        if (!isValid(destinationSquare)) return false;
         if (!taking) {
             if (this.hasMoved) {
                 if (this.getPieceColor() == GameColor.WHITE) {

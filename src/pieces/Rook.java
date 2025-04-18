@@ -35,6 +35,7 @@ public class Rook extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+        if (!isValid(destinationSquare)) return false;
         if (Objects.equals(this.getPieceSquare().getCoordinates(), destinationSquare.getCoordinates())) {
             // incorrect, current square and destination square is the same
             return false;

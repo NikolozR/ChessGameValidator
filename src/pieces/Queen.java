@@ -16,6 +16,7 @@ public class Queen extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+        if (!isValid(destinationSquare)) return false;
         Rook rook = new Rook(this.getPieceColor(), this.getPieceSquare(), this.getChessboard());
         Bishop bishop = new Bishop(this.getPieceColor(), this.getPieceSquare(), this.getChessboard());
         return rook.isCorrectMove(destinationSquare, taking) || bishop.isCorrectMove(destinationSquare, taking);

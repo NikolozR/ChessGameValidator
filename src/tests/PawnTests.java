@@ -29,6 +29,18 @@ public class PawnTests {
     }
 
     @Test
+    public void testPawnDoubleMoveAfterMoved() {
+        ChessBoardSquare square = chessBoard.getBoardSquare("e2");
+        Pawn pawn = new Pawn(GameColor.WHITE, square, chessBoard);
+        square.setCurrentPiece(pawn);
+
+        pawn.setHasMoved(true);
+
+        assertFalse(pawn.isCorrectMove(chessBoard.getBoardSquare("e4"), false), "Pawn shouldn't double-move after moving once");
+    }
+
+
+    @Test
     public void testWhitePawnBlockedMove() {
         ChessBoardSquare square = chessBoard.getBoardSquare("e2");
         Pawn pawn = new Pawn(GameColor.WHITE, square, chessBoard);

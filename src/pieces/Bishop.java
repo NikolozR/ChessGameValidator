@@ -17,6 +17,7 @@ public class Bishop extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+        if (!isValid(destinationSquare)) return false;
         if (taking) return this.canTake(destinationSquare, this.getPieceColor()) && this.canMove(destinationSquare);
         else return destinationSquare.isSquareEmpty() && this.canMove(destinationSquare);
     }
