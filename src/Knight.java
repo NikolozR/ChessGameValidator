@@ -6,6 +6,10 @@ public class Knight extends ChessPiece {
         super(pieceColor, pieceSquare, chessboard);
     }
 
+    public Knight(GameColor pieceColor, ChessBoard chessboard) {
+        super(pieceColor, chessboard);
+    }
+
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
         if (taking) {
@@ -29,7 +33,7 @@ public class Knight extends ChessPiece {
 
     @Override
     public Knight clone(ChessBoard chessBoard) {
-        Knight result = new Knight(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        Knight result = new Knight(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }

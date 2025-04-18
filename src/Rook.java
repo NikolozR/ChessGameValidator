@@ -9,6 +9,11 @@ public class Rook extends ChessPiece {
         this.hasMoved = false;
     }
 
+    public Rook(GameColor pieceColor, ChessBoard chessboard) {
+        super(pieceColor, chessboard);
+        this.hasMoved = false;
+    }
+
 
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
@@ -51,7 +56,7 @@ public class Rook extends ChessPiece {
 
     @Override
     public Rook clone(ChessBoard chessBoard) {
-        Rook result = new Rook(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        Rook result = new Rook(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }
@@ -86,12 +91,6 @@ public class Rook extends ChessPiece {
         int currentRankIndex = this.getPieceSquare().getRank() - 1;
         int destinationRankIndex = destinationSquare.getRank() - 1;
         int fileIndex = destinationSquare.getFileCharCode() - 97;
-        if (this.getPieceSquare().getCoordinates().equals("d6")) {
-            System.out.println(currentRankIndex);
-            System.out.println(destinationRankIndex);
-            System.out.println(fileIndex);
-            System.out.println("WHERE IS IT " + this.getChessboard().getBoardSquares()[5][3].isSquareEmpty());
-        }
         for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
             ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
             if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {

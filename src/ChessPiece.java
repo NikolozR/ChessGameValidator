@@ -12,6 +12,12 @@ public class ChessPiece implements ChessPieceI {
         this.chessboard = chessboard;
     }
 
+    public ChessPiece(GameColor pieceColor, ChessBoard chessboard) {
+        this.pieceColor = pieceColor;
+        this.taken = false;
+        this.chessboard = chessboard;
+    }
+
     public ChessPiece clone(ChessBoard chessBoard) {
         ChessPiece result = new ChessPiece(this.pieceColor, this.pieceSquare, chessboard);
         result.setTaken(taken);

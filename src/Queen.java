@@ -4,6 +4,10 @@ public class Queen extends ChessPiece {
         super(pieceColor, pieceSquare, chessboard);
     }
 
+    public Queen(GameColor pieceColor, ChessBoard chessboard) {
+        super(pieceColor, chessboard);
+    }
+
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
         Rook rook = new Rook(this.getPieceColor(), this.getPieceSquare(), this.getChessboard());
@@ -19,7 +23,7 @@ public class Queen extends ChessPiece {
 
     @Override
     public Queen clone(ChessBoard chessBoard) {
-        Queen result = new Queen(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        Queen result = new Queen(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }

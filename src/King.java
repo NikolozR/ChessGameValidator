@@ -8,6 +8,12 @@ public class King extends ChessPiece {
         this.underAttack = false;
     }
 
+    public King(GameColor pieceColor, ChessBoard chessboard) {
+        super(pieceColor, chessboard);
+        this.hasMoved = false;
+        this.underAttack = false;
+    }
+
     public void move(String castlingType) {
         if (this.isCorrectMove(castlingType)) {
             this.getPieceSquare().setCurrentPiece(null);
@@ -155,7 +161,7 @@ public class King extends ChessPiece {
 
     @Override
     public King clone(ChessBoard chessBoard) {
-        King result = new King(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        King result = new King(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }

@@ -5,6 +5,10 @@ public class Bishop extends ChessPiece {
         super(pieceColor, pieceSquare, chessboard);
     }
 
+    public Bishop(GameColor pieceColor, ChessBoard chessboard) {
+        super(pieceColor, chessboard);
+    }
+
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
         if (taking) return this.canTake(destinationSquare, this.getPieceColor()) && this.canMove(destinationSquare);
@@ -46,7 +50,7 @@ public class Bishop extends ChessPiece {
 
     @Override
     public Bishop clone(ChessBoard chessBoard) {
-        Bishop result = new Bishop(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        Bishop result = new Bishop(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }

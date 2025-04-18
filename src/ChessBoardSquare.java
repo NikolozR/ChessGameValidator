@@ -1,7 +1,7 @@
 public class ChessBoardSquare {
     private ChessPiece currentPiece;
     private final String coordinates;
-    private final ChessBoard chessBoard;
+    private ChessBoard chessBoard;
 
 
     public ChessBoardSquare(String coordinates, ChessBoard chessBoard) {
@@ -9,6 +9,12 @@ public class ChessBoardSquare {
         this.currentPiece = null;
         this.chessBoard = chessBoard;
     }
+
+    public ChessBoardSquare(String coordinates) {
+        this.coordinates = coordinates;
+        this.currentPiece = null;
+    }
+
 
     public void takesCurrentPiece(ChessPiece newCurrentPiece) {
         this.getCurrentPiece().setPieceSquare(null);
@@ -22,9 +28,7 @@ public class ChessBoardSquare {
     }
 
     public void regularMove(ChessPiece newCurrentPiece) {
-        ChessBoardSquare old = newCurrentPiece.getPieceSquare();
-        old.setCurrentPiece(null);
-        this.chessBoard.getBoardSquares()[old.getRank() - 1][old.getFileCharCode() - 97] = old;
+        newCurrentPiece.getPieceSquare().setCurrentPiece(null);
         this.setCurrentPiece(newCurrentPiece);
         newCurrentPiece.setPieceSquare(this);
     }
@@ -57,5 +61,9 @@ public class ChessBoardSquare {
 
     public void setCurrentPiece(ChessPiece currentPiece) {
         this.currentPiece = currentPiece;
+    }
+
+    public void setChessBoard(ChessBoard chessBoard) {
+        this.chessBoard = chessBoard;
     }
 }

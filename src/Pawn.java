@@ -6,6 +6,11 @@ public class Pawn extends ChessPiece {
         this.hasMoved = false;
     }
 
+    public Pawn(GameColor pieceColor, ChessBoard chessBoard) {
+        super(pieceColor, chessBoard);
+        this.hasMoved = false;
+    }
+
 
     @Override
     public void move(ChessBoardSquare destinationSquare, boolean taking) {
@@ -107,7 +112,7 @@ public class Pawn extends ChessPiece {
 
     @Override
     public Pawn clone(ChessBoard chessBoard) {
-        Pawn result = new Pawn(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        Pawn result = new Pawn(this.getPieceColor(), chessBoard);
         result.setTaken(this.isTaken());
         return result;
     }

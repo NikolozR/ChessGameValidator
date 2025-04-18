@@ -3,7 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ChessBoard {
-    private final ChessBoardSquare[][] boardSquares;
+    private ChessBoardSquare[][] boardSquares;
     private final ArrayList<ChessPiece> blacksTook = new ArrayList<>();
     private final ArrayList<ChessPiece> whitesTook = new ArrayList<>();
     private final ArrayList<Bishop> whiteBishops = new ArrayList<>();
@@ -21,7 +21,7 @@ public class ChessBoard {
 
 
     public ChessBoard() {
-        boardSquares = new ChessBoardSquare[8][8];
+        this.boardSquares = new ChessBoardSquare[8][8];
         for (int i = 0; i < boardSquares.length; i++) {
             for (int k = 0; k < boardSquares[0].length; k++) {
                 int rank = i + 1;
@@ -72,14 +72,14 @@ public class ChessBoard {
     }
 
     public ChessBoard(boolean empty) {
-        boardSquares = new ChessBoardSquare[8][8];
+        this.boardSquares = new ChessBoardSquare[8][8];
         if (empty) {
             for (int i = 0; i < boardSquares.length; i++) {
                 for (int k = 0; k < boardSquares[0].length; k++) {
                     int rank = i + 1;
                     char file = (char) (k + 97);
-                    ChessBoardSquare cbs = new ChessBoardSquare(file + "" + rank, this);
-                    boardSquares[i][k] = cbs;
+                    ChessBoardSquare cbs = new ChessBoardSquare(file + "" + rank);
+                    this.boardSquares[i][k] = cbs;
                 }
             }
 
@@ -422,7 +422,9 @@ public class ChessBoard {
                 ChessPiece originalPiece = this.getBoardSquares()[x][y].getCurrentPiece();
                 if (originalPiece != null) {
                     ChessPiece clonedPiece = cloneMap.get(originalPiece);
+                    result.getBoardSquares()[x][y].setChessBoard(result);
                     result.getBoardSquares()[x][y].setCurrentPiece(clonedPiece);
+                    clonedPiece.setPieceSquare(result.getBoardSquares()[x][y]);
                 }
             }
         }
