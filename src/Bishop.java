@@ -43,4 +43,36 @@ public class Bishop extends ChessPiece {
 
         }
     }
+
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+        if (Objects.equals(destinationSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) return false;
+        else {
+            int currentRankIndex = startingSquare.getRank() - 1;
+            int destinationRankIndex = destinationSquare.getRank() - 1;
+            int currentFileIndex = startingSquare.getFileCharCode() - 97;
+            int destinationFileIndex = destinationSquare.getFileCharCode() - 97;
+
+            int rankDiff = Math.abs(destinationRankIndex - currentRankIndex);
+            int fileDiff = Math.abs(destinationFileIndex - currentFileIndex);
+
+            if (rankDiff != fileDiff) return false;
+            int rankStep = currentRankIndex > destinationRankIndex ? -1 : 1;
+            int fileStep = currentFileIndex > destinationFileIndex ? -1 : 1;
+
+            int rank = currentRankIndex + rankStep;
+            int file = currentFileIndex + fileStep;
+
+            while (rank != destinationRankIndex && file != destinationFileIndex) {
+                ChessBoardSquare intermediate = this.getChessboard().getBoardSquares()[rank][file];
+                if (intermediate.getCurrentPiece() != null && intermediate.getCurrentPiece() != this) {
+                    return false;
+                }
+                rank += rankStep;
+                file += fileStep;
+            }
+
+            return true;
+
+        }
+    }
 }

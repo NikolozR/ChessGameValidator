@@ -45,6 +45,11 @@ public class Pawn extends ChessPiece {
         }
     }
 
+    public boolean canAttack(ChessBoardSquare startingSquar, ChessBoardSquare destinationSquare) {
+        return Math.abs(destinationSquare.getFileCharCode() - startingSquar.getFileCharCode()) == 1
+                && destinationSquare.getRank() + (this.getPieceColor() == GameColor.WHITE ? -1 : 1) == startingSquar.getRank();
+    }
+
 
     private boolean canWhitePawnTake(ChessBoardSquare destinationSquare) {
         return !destinationSquare.isSquareEmpty()

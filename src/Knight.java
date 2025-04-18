@@ -26,4 +26,17 @@ public class Knight extends ChessPiece {
 
         }
     }
+
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+        if (Objects.equals(this.getPieceSquare().getCoordinates(), destinationSquare.getCoordinates())) return false;
+        else {
+            int currentFile = startingSquare.getFileCharCode();
+            int currentRank = startingSquare.getRank();
+            int destinationFile = destinationSquare.getFileCharCode();
+            int destinationRank = destinationSquare.getRank();
+            return (Math.abs(destinationFile - currentFile) == 1 && Math.abs(currentRank - destinationRank) == 2)
+                    || (Math.abs(destinationFile - currentFile) == 2 && Math.abs(currentRank - destinationRank) == 1);
+
+        }
+    }
 }

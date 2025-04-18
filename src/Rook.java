@@ -1,3 +1,4 @@
+import javax.print.attribute.standard.Destination;
 import java.util.Objects;
 
 public class Rook extends ChessPiece {
@@ -44,11 +45,37 @@ public class Rook extends ChessPiece {
         }
     }
 
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+        if (startingSquare.getFileCharCode() == destinationSquare.getFileCharCode() && startingSquare.getRank() != destinationSquare.getRank()) {
+            int currentRankIndex = startingSquare.getRank() - 1;
+            int destinationRankIndex = destinationSquare.getRank() - 1;
+            int fileIndex = destinationSquare.getFileCharCode() - 97;
+            for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
+                ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
+                if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), startingSquare.getCoordinates()) && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (startingSquare.getRank() == destinationSquare.getRank() && startingSquare.getFileCharCode() != destinationSquare.getFileCharCode()) {
+            int rankIndex = destinationSquare.getRank() - 1;
+            int currentFile = startingSquare.getFileCharCode() - 97;
+            int destinationFile = destinationSquare.getFileCharCode() - 97;
+            for (int i = Math.min(currentFile, destinationFile) + 1; i < Math.max(currentFile, destinationFile); i++) {
+                ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[rankIndex][i];
+                if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), startingSquare.getCoordinates()) && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
+                    return false;
+                }
+            }
+            return true;
+        } else return false;
+    }
+
     private boolean canMoveVertically(ChessBoardSquare destinationSquare) {
         int currentRankIndex = this.getPieceSquare().getRank() - 1;
         int destinationRankIndex = destinationSquare.getRank() - 1;
         int fileIndex = destinationSquare.getFileCharCode() - 97;
-        for (int i = Math.min(currentRankIndex, destinationRankIndex); i < Math.max(currentRankIndex, destinationRankIndex); i++) {
+        for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
             ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
             if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
                 // something was in a way of Rook

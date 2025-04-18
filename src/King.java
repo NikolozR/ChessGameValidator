@@ -1,9 +1,11 @@
 public class King extends ChessPiece {
     private boolean hasMoved;
+    private boolean underAttack;
 
     public King(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessboard) {
         super(pieceColor, pieceSquare, chessboard);
         this.hasMoved = false;
+        this.underAttack = false;
     }
 
     public void move(String castlingType) {
@@ -138,5 +140,13 @@ public class King extends ChessPiece {
             }
         }
         return false;
+    }
+
+    public boolean isUnderAttack() {
+        return underAttack;
+    }
+
+    public void setUnderAttack(boolean underAttack) {
+        this.underAttack = underAttack;
     }
 }
