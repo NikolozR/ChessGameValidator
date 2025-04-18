@@ -17,7 +17,13 @@ public class ChessValidator {
             tokenizer.tokenize(g.getGameNumber(), g.getGameMoves());
         }
         for (GameEntry g : pgnReader.getGames()) {
-            System.out.println("Analyzing game N" + g.getGameNumber());
+            System.out.printf(
+                    "--- Analyzing Game #%d ---%n  Date:  %s%n  White: %s%n  Black: %s%n",
+                    g.getGameNumber(),
+                    g.getDate(),
+                    g.getWhite(),
+                    g.getBlack()
+            );
             int errorCount = 0;
             ArrayList<GameMove> currentGame = tokenizer.getTokenizedGameHistory().get(g.getGameNumber());
             for (GameMove gm : currentGame) {

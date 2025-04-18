@@ -47,7 +47,7 @@ public class SinglePlayerMove {
         this.lastMove = lastMove;
         this.validMove = this.checkValidity();
         if (!this.validMove) {
-            this.errorStatusText = "Game Move " + this.gameMoveNumber + ": " + (this.playerColor == GameColor.WHITE ? "White made illegal move: " : "Black made illegal move: ") + this.move;
+            this.errorStatusText = "Move #" + this.gameMoveNumber + ": " + (this.playerColor == GameColor.WHITE ? "White tried illegal move: " : "Black tried illegal move: ") + this.move;
         }
     }
 

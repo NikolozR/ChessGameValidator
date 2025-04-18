@@ -27,7 +27,7 @@ public class Tokenizer {
             String chunk = matcher.group(2).trim();
             String[] splittedChunk = chunk.split(" ");
             if (splittedChunk.length > 3 || splittedChunk.length < 2 || (splittedChunk.length == 3 && !splittedChunk[2].equals("0-1") && !splittedChunk[2].equals("1-0") && !splittedChunk[2].equals("1/2-1/2"))) {
-                GameMove currentGameMove = new GameMove(number, "Game Move " + number + ": " + "On each step of the game there should be 2 moves, here it was " + splittedChunk.length);
+                GameMove currentGameMove = new GameMove(number, "Move #" + number + ": " + "On each step of the game there should be 2 moves, here it was " + splittedChunk.length);
                 currentGame.add(currentGameMove);
             } else {
                 SinglePlayerMove whiteMove = new SinglePlayerMove(number, GameColor.WHITE, splittedChunk[0]);

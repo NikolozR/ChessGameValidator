@@ -24,19 +24,31 @@ public class Simulation {
 
     public void simulate() {
         tokenizedGameHistory.forEach((key, val) -> {
-
+            System.out.print(String.format("Simulating Game #%d... ", key)); // Indicate start
             try {
                 this.simulateSingleGame(key, val);
-                System.out.println("Game #" + key + " was simulated correctly!");
-                this.setBoard(new ChessBoard());
+                System.out.println("SUCCESS!"); // Indicate success
+                // Reset board *only* after successful simulation or handling failure
+                // this.setBoard(new ChessBoard()); // Move reset below
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                System.out.println("Moving on the next game...");
+                // Indicate failure clearly and provide the reason
+                String errorMessage = e.getMessage() != null ? e.getMessage() : e.getClass().getSimpleName();
+                System.err.println(String.format("FAILED! Reason:\n%s\nSkipping game.", errorMessage));
+                // Optionally print stack trace for debugging (to standard error)
+                // e.printStackTrace(System.err);
+            } finally {
+                // Reset the board regardless of success or failure before the next iteration
                 this.setBoard(new ChessBoard());
             }
         });
-
+        System.out.println("--- Simulation Complete ---"); // Add a final message
     }
+
+// --- Example Output ---
+// Simulating Game #56... SUCCESS!
+// Simulating Game #57... FAILED! Reason: Invalid move format 'O-O-O-O'. Skipping game.
+// Simulating Game #58... SUCCESS!
+// --- Simulation Complete ---
 
     public void simulateSingleGame(int gameNumber, ArrayList<GameMove> game) {
         int erroredMoveNumber = 0;
@@ -59,7 +71,7 @@ public class Simulation {
             moveCount++;
         }
         if (goal != moveCount)
-            throw new SimulationGameError("Game #" + gameNumber + " Had Error. Move Number: " + erroredMoveNumber + ". Player that had error: " + erroredColor);
+            throw new SimulationGameError("Move #" + erroredMoveNumber + ".\nPlayer that had error: " + erroredColor);
     }
 
 
