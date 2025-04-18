@@ -35,7 +35,6 @@ public class BishopTests {
         Bishop bishop = new Bishop(GameColor.WHITE, square, chessBoard);
         square.setCurrentPiece(bishop);
 
-        // Block with a white pawn at d2
         ChessBoardSquare blockingSquare = chessBoard.getBoardSquare("d2");
         blockingSquare.setCurrentPiece(new Pawn(GameColor.WHITE, blockingSquare, chessBoard));
 
@@ -63,5 +62,6 @@ public class BishopTests {
         assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("c2"), false), "Bishop should not move vertically");
         assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("d1"), false), "Bishop should not move in non-diagonal patterns");
         assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("d9"), false), "Bishop should not move out of board");
+        assertFalse(bishop.isCorrectMove(chessBoard.getBoardSquare("c1"), false), "Bishop should not move on its own square");
     }
 }

@@ -75,11 +75,13 @@ public class PawnTests {
     }
 
     @Test
-    public void testPawnIllegalBackwardMove() {
+    public void testPawnIllegalMoves() {
         ChessBoardSquare square = chessBoard.getBoardSquare("e4");
         Pawn pawn = new Pawn(GameColor.WHITE, square, chessBoard);
         square.setCurrentPiece(pawn);
 
         assertFalse(pawn.isCorrectMove(chessBoard.getBoardSquare("e3"), false), "White pawn should not move backward");
+        assertFalse(pawn.isCorrectMove(chessBoard.getBoardSquare("e10"), false), "White pawn should not move on illegal coordinate");
+        assertFalse(pawn.isCorrectMove(chessBoard.getBoardSquare("e4"), false), "White pawn should not stay on same square");
     }
 }

@@ -382,6 +382,7 @@ public class ChessBoard {
 
 
     public ChessBoardSquare getBoardSquare(String coordinate) {
+        if (coordinate.length() != 2) return null;
         int rank = Integer.parseInt(coordinate.substring(1)) - 1;
         int file = coordinate.charAt(0) - 97;
         if (rank < 0 || rank > 7 || file < 0 || file > 7) return null;
