@@ -1,3 +1,9 @@
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 public class ChessPiece implements ChessPieceI {
     private boolean taken;
     private ChessBoardSquare pieceSquare;
@@ -68,7 +74,7 @@ public class ChessPiece implements ChessPieceI {
 
     @Override
     public boolean canTake(ChessBoardSquare destinationSquare, GameColor currentColor) {
-        // add that it is not King
+        // add that it is not pieces.King
         return !destinationSquare.isSquareEmpty() && destinationSquare.getCurrentPiece().getPieceColor() != currentColor;
     }
 }

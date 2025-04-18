@@ -1,3 +1,9 @@
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 public class King extends ChessPiece {
     private boolean hasMoved;
     private boolean underAttack;

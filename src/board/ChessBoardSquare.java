@@ -1,3 +1,8 @@
+package board;
+
+import game.GameColor;
+import pieces.ChessPiece;
+
 public class ChessBoardSquare {
     private ChessPiece currentPiece;
     private final String coordinates;

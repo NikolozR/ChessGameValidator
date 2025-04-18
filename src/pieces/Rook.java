@@ -1,4 +1,9 @@
-import javax.print.attribute.standard.Destination;
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 import java.util.Objects;
 
 public class Rook extends ChessPiece {
@@ -49,7 +54,7 @@ public class Rook extends ChessPiece {
                 return destinationSquare.isSquareEmpty() && this.canMoveHorizontally(destinationSquare);
             }
         } else {
-            // neither file nor rank is the same (Rook should move with 90 degree)
+            // neither file nor rank is the same (pieces.Rook should move with 90 degree)
             return false;
         }
     }
@@ -94,7 +99,7 @@ public class Rook extends ChessPiece {
         for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
             ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
             if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
-                // something was in a way of Rook
+                // something was in a way of pieces.Rook
                 return false;
             }
         }
@@ -109,7 +114,7 @@ public class Rook extends ChessPiece {
         for (int i = Math.min(currentFile, destinationFile) + 1; i < Math.max(currentFile, destinationFile); i++) {
             ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[rankIndex][i];
             if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
-                // something was in a way of Rook
+                // something was in a way of pieces.Rook
                 return false;
             }
         }

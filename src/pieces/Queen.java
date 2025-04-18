@@ -1,3 +1,9 @@
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 public class Queen extends ChessPiece {
 
     public Queen(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessboard) {

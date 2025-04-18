@@ -1,3 +1,9 @@
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 public class Pawn extends ChessPiece {
     private boolean hasMoved;
 

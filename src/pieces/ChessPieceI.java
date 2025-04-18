@@ -1,3 +1,8 @@
+package pieces;
+
+import board.ChessBoardSquare;
+import game.GameColor;
+
 public interface ChessPieceI {
     void move(ChessBoardSquare destinationSquare, boolean taking);
 

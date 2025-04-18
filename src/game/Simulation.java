@@ -1,3 +1,7 @@
+package game;
+
+import board.ChessBoard;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 

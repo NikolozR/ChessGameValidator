@@ -1,3 +1,5 @@
+package game;
+
 public class GameMove {
 
     private final int moveNumber;

@@ -1,3 +1,5 @@
+package game;
+
 public class GameEntry {
     private final int gameNumber;
     private final String event;

@@ -1,3 +1,9 @@
+package pieces;
+
+import board.ChessBoard;
+import board.ChessBoardSquare;
+import game.GameColor;
+
 import java.util.Objects;
 
 public class Bishop extends ChessPiece {

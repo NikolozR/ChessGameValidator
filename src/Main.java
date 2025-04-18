@@ -1,10 +1,16 @@
+import game.GameEntry;
+import game.GameMove;
+import game.Simulation;
+import io.PGNReader;
+import io.Tokenizer;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         PGNReader pgnReader = new PGNReader();
-        pgnReader.extractGames("src/test.pgn");
+        pgnReader.extractGames("src/io/test.pgn");
         Tokenizer tokenizer = new Tokenizer();
         Simulation simulation = new Simulation();
         for (GameEntry g : pgnReader.getGames()) {
@@ -42,7 +48,7 @@ public class Main {
         simulation.simulate();
 
 
-//        for (GameEntry g : pgnReader.getGames()) {
+//        for (game.GameEntry g : pgnReader.getGames()) {
 //            System.out.println("Game #" + g.getGameNumber());
 //            System.out.println("Event: " + g.getEvent());
 //            System.out.println("Date: " + g.getDate());

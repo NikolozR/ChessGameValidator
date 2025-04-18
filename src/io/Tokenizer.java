@@ -1,3 +1,9 @@
+package io;
+
+import game.GameColor;
+import game.GameMove;
+import game.SinglePlayerMove;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
