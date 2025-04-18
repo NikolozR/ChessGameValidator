@@ -32,6 +32,21 @@ public class ChessBoardSquare {
         this.regularMove(newCurrentPiece);
     }
 
+    public void takesCurrentPiece(ChessPiece newCurrentPiece, boolean wasEP, GameColor capturerColor) {
+        int rank = this.getRank() - 1;
+        int file = this.getFileCharCode() - 97;
+        ChessBoardSquare toKill;
+        if (capturerColor == GameColor.BLACK) {
+            toKill = this.chessBoard.getBoardSquares()[rank + 1][file];
+        } else {
+            toKill = this.chessBoard.getBoardSquares()[rank - 1][file];
+        }
+        toKill.getCurrentPiece().setPieceSquare(null);
+        toKill.getCurrentPiece().setTaken(true);
+        toKill.setCurrentPiece(null);
+        this.regularMove(newCurrentPiece);
+    }
+
     public void regularMove(ChessPiece newCurrentPiece) {
         newCurrentPiece.getPieceSquare().setCurrentPiece(null);
         this.setCurrentPiece(newCurrentPiece);

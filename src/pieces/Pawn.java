@@ -6,10 +6,12 @@ import game.GameColor;
 
 public class Pawn extends ChessPiece {
     private boolean hasMoved;
+    private boolean justDidFirstMove;
 
     public Pawn(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessBoard) {
         super(pieceColor, pieceSquare, chessBoard);
         this.hasMoved = false;
+        this.justDidFirstMove = false;
     }
 
     public Pawn(GameColor pieceColor, ChessBoard chessBoard) {
@@ -23,10 +25,24 @@ public class Pawn extends ChessPiece {
         if (this.isCorrectMove(destinationSquare, taking)) {
             this.getPieceSquare().setCurrentPiece(null);
             if (taking) {
-                destinationSquare.takesCurrentPiece(this);
+                if (this.getPieceColor() == GameColor.WHITE) {
+                    if (this.whiteDoingEP(destinationSquare)) {
+                        destinationSquare.takesCurrentPiece(this, true, GameColor.WHITE);
+                    } else {
+                        destinationSquare.takesCurrentPiece(this);
+                    }
+                } else {
+                    if (this.blackDoingEP(destinationSquare)) {
+                        destinationSquare.takesCurrentPiece(this, true, GameColor.BLACK);
+                    } else {
+                        destinationSquare.takesCurrentPiece(this);
+                    }
+                }
             } else {
                 destinationSquare.regularMove(this);
             }
+            if (!hasMoved) this.justDidFirstMove = true;
+            else if (justDidFirstMove) this.justDidFirstMove = false;
             this.setHasMoved(true);
         }
     }
@@ -78,17 +94,45 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canWhitePawnTake(ChessBoardSquare destinationSquare) {
-        return !destinationSquare.isSquareEmpty()
+        return (!destinationSquare.isSquareEmpty()
                 && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.BLACK
                 && destinationSquare.getRank() - 1 == this.getPieceSquare().getRank()
-                && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1;
+                && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1) || this.whiteDoingEP(destinationSquare);
+    }
+
+    private boolean whiteDoingEP(ChessBoardSquare destinationSquare) {
+        if (!this.isValid(destinationSquare)) return false;
+        if (destinationSquare.isSquareEmpty()) {
+            int rankIndex = destinationSquare.getRank() - 1;
+            int fileIndex = destinationSquare.getFileCharCode() - 97;
+            if (rankIndex - 1 < 0) return false;
+            ChessBoardSquare epPotential = this.getChessboard().getBoardSquares()[rankIndex - 1][fileIndex];
+            if (epPotential.isSquareEmpty()) return false;
+            else if (epPotential.getCurrentPiece() instanceof Pawn && !epPotential.getCurrentPiece().getPieceColor().equals(this.getPieceColor()) && ((Pawn) epPotential.getCurrentPiece()).isJustDidFirstMove())
+                return true;
+            return false;
+        } else return false;
+    }
+
+    private boolean blackDoingEP(ChessBoardSquare destinationSquare) {
+        if (!this.isValid(destinationSquare)) return false;
+        if (destinationSquare.isSquareEmpty()) {
+            int rankIndex = destinationSquare.getRank() - 1;
+            int fileIndex = destinationSquare.getFileCharCode() - 97;
+            if (rankIndex + 1 > 7) return false;
+            ChessBoardSquare epPotential = this.getChessboard().getBoardSquares()[rankIndex + 1][fileIndex];
+            if (epPotential.isSquareEmpty()) return false;
+            else if (epPotential.getCurrentPiece() instanceof Pawn && !epPotential.getCurrentPiece().getPieceColor().equals(this.getPieceColor()) && ((Pawn) epPotential.getCurrentPiece()).isJustDidFirstMove())
+                return true;
+            return false;
+        } else return false;
     }
 
     private boolean canBlackPawnTake(ChessBoardSquare destinationSquare) {
-        return !destinationSquare.isSquareEmpty()
+        return (!destinationSquare.isSquareEmpty()
                 && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.WHITE
                 && destinationSquare.getRank() + 1 == this.getPieceSquare().getRank()
-                && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1;
+                && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1) || this.blackDoingEP(destinationSquare);
     }
 
     private boolean canWhitePawnMoveAfterFirstMove(ChessBoardSquare destinationSquare) {
@@ -138,4 +182,7 @@ public class Pawn extends ChessPiece {
         return result;
     }
 
+    public boolean isJustDidFirstMove() {
+        return justDidFirstMove;
+    }
 }
