@@ -1,7 +1,7 @@
 package board;
 
 import game.GameColor;
-import pieces.ChessPiece;
+import pieces.*;
 
 public class ChessBoardSquare {
     private ChessPiece currentPiece;
@@ -36,6 +36,28 @@ public class ChessBoardSquare {
         newCurrentPiece.getPieceSquare().setCurrentPiece(null);
         this.setCurrentPiece(newCurrentPiece);
         newCurrentPiece.setPieceSquare(this);
+    }
+
+    public void promote(Pawn pawn, ChessPiece newPiece) {
+        if (this.isSquareEmpty()) {
+            this.setCurrentPiece(newPiece);
+        } else {
+            this.getCurrentPiece().setPieceSquare(null);
+            this.getCurrentPiece().setTaken(true);
+            this.setCurrentPiece(newPiece);
+        }
+        if (newPiece instanceof Rook) {
+            (newPiece.getPieceColor() == GameColor.WHITE ? this.chessBoard.getWhiteRooks() : this.chessBoard.getBlackRooks()).add((Rook) newPiece);
+        } else if (newPiece instanceof Knight) {
+            (newPiece.getPieceColor() == GameColor.WHITE ? this.chessBoard.getWhiteKnights() : this.chessBoard.getBlackKnights()).add((Knight) newPiece);
+        } else if (newPiece instanceof Bishop) {
+            (newPiece.getPieceColor() == GameColor.WHITE ? this.chessBoard.getWhiteBishops() : this.chessBoard.getBlackBishops()).add((Bishop) newPiece);
+        } else if (newPiece instanceof Queen) {
+            (newPiece.getPieceColor() == GameColor.WHITE ? this.chessBoard.getWhiteQueens() : this.chessBoard.getBlackQueens()).add((Queen) newPiece);
+        }
+        newPiece.setPieceSquare(this);
+        pawn.setTaken(true);
+        pawn.setPieceSquare(null);
     }
 
 

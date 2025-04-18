@@ -56,11 +56,25 @@ public class Pawn extends ChessPiece {
         }
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquar, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
-        return Math.abs(destinationSquare.getFileCharCode() - startingSquar.getFileCharCode()) == 1
-                && destinationSquare.getRank() + (this.getPieceColor() == GameColor.WHITE ? -1 : 1) == startingSquar.getRank();
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
+        return Math.abs(destinationSquare.getFileCharCode() - startingSquare.getFileCharCode()) == 1
+                && destinationSquare.getRank() + (this.getPieceColor() == GameColor.WHITE ? -1 : 1) == startingSquare.getRank();
     }
 
+    public void promote(ChessBoardSquare destinationSquare, boolean taking, char promoteResult) {
+        if (canPromote(destinationSquare, taking)) {
+            ChessPiece newChessPiece = new Queen(this.getPieceColor(), this.getChessboard());
+            if (promoteResult == 'R') newChessPiece = new Rook(this.getPieceColor(), this.getChessboard());
+            else if (promoteResult == 'N') newChessPiece = new Knight(this.getPieceColor(), this.getChessboard());
+            else if (promoteResult == 'B') newChessPiece = new Bishop(this.getPieceColor(), this.getChessboard());
+            destinationSquare.promote(this, newChessPiece);
+        }
+    }
+
+    public boolean canPromote(ChessBoardSquare destinationSquare, boolean taking) {
+        if (destinationSquare.getRank() != 8 && destinationSquare.getRank() != 1) return false;
+        else return this.isCorrectMove(destinationSquare, taking);
+    }
 
     private boolean canWhitePawnTake(ChessBoardSquare destinationSquare) {
         return !destinationSquare.isSquareEmpty()

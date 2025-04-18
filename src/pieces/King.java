@@ -155,14 +155,22 @@ public class King extends ChessPiece {
         return false;
     }
 
-    public boolean isValidAttack(ChessBoard testBoard, ChessPiece movingPiece, ChessBoardSquare destinationSquare, boolean taking) {
-        if (!movingPiece.isCorrectMove(destinationSquare, taking)) {
-            return false;
+    public boolean isValidAttack(ChessBoard testBoard, ChessPiece movingPiece, ChessBoardSquare destinationSquare, boolean taking, boolean promoting, char promotionResult) {
+        if (!promoting) {
+            if (!movingPiece.isCorrectMove(destinationSquare, taking)) {
+                return false;
+            }
+            if (taking) {
+                destinationSquare.takesCurrentPiece(movingPiece);
+            } else destinationSquare.regularMove(movingPiece);
+            return testBoard.isKingUnderAttack(this.getPieceColor());
+        } else {
+            if (!((Pawn) movingPiece).canPromote(destinationSquare, taking)) {
+                return false;
+            }
+            ((Pawn) movingPiece).promote(destinationSquare, taking, promotionResult);
+            return testBoard.isKingUnderAttack(this.getPieceColor());
         }
-        if (taking) {
-            destinationSquare.takesCurrentPiece(movingPiece);
-        } else destinationSquare.regularMove(movingPiece);
-        return testBoard.isKingUnderAttack(this.getPieceColor());
     }
 
     @Override
