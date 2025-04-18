@@ -84,7 +84,6 @@ public class ChessPiece implements ChessPieceI {
 
     @Override
     public boolean canTake(ChessBoardSquare destinationSquare, GameColor currentColor) {
-        // add that it is not pieces.King
-        return !destinationSquare.isSquareEmpty() && destinationSquare.getCurrentPiece().getPieceColor() != currentColor;
+        return !destinationSquare.isSquareEmpty() && destinationSquare.getCurrentPiece().getPieceColor() != currentColor && !(destinationSquare.getCurrentPiece() instanceof King);
     }
 }

@@ -95,7 +95,7 @@ public class Pawn extends ChessPiece {
 
     private boolean canWhitePawnTake(ChessBoardSquare destinationSquare) {
         return (!destinationSquare.isSquareEmpty()
-                && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.BLACK
+                && !(destinationSquare.getCurrentPiece() instanceof King) && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.BLACK
                 && destinationSquare.getRank() - 1 == this.getPieceSquare().getRank()
                 && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1) || this.whiteDoingEP(destinationSquare);
     }
@@ -130,7 +130,7 @@ public class Pawn extends ChessPiece {
 
     private boolean canBlackPawnTake(ChessBoardSquare destinationSquare) {
         return (!destinationSquare.isSquareEmpty()
-                && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.WHITE
+                && !(destinationSquare.getCurrentPiece() instanceof King) && destinationSquare.getCurrentPiece().getPieceColor() == GameColor.WHITE
                 && destinationSquare.getRank() + 1 == this.getPieceSquare().getRank()
                 && Math.abs(destinationSquare.getFileCharCode() - this.getPieceSquare().getFileCharCode()) == 1) || this.blackDoingEP(destinationSquare);
     }
