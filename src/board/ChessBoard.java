@@ -381,6 +381,11 @@ public class ChessBoard {
     }
 
 
+    public ChessBoardSquare getBoardSquare(String coordinate) {
+        return this.getBoardSquares()[Integer.parseInt(coordinate.substring(1)) - 1][coordinate.charAt(0) - 97];
+    }
+
+
     public ChessBoard copy() {
         ChessBoard result = new ChessBoard(true);
         Map<ChessPiece, ChessPiece> cloneMap = new HashMap<>();
