@@ -44,7 +44,14 @@ public class Bishop extends ChessPiece {
         }
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+    @Override
+    public Bishop clone(ChessBoard chessBoard) {
+        Bishop result = new Bishop(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
+    }
+
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
         if (Objects.equals(destinationSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) return false;
         else {
             int currentRankIndex = startingSquare.getRank() - 1;
@@ -63,8 +70,8 @@ public class Bishop extends ChessPiece {
             int file = currentFileIndex + fileStep;
 
             while (rank != destinationRankIndex && file != destinationFileIndex) {
-                ChessBoardSquare intermediate = this.getChessboard().getBoardSquares()[rank][file];
-                if (intermediate.getCurrentPiece() != null && intermediate.getCurrentPiece() != this) {
+                ChessBoardSquare intermediate = chessBoard.getBoardSquares()[rank][file];
+                if (intermediate.getCurrentPiece() != null) {
                     return false;
                 }
                 rank += rankStep;

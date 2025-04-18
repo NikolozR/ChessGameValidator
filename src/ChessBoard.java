@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChessBoard {
     private final ChessBoardSquare[][] boardSquares;
@@ -69,41 +71,97 @@ public class ChessBoard {
         }
     }
 
+    public ChessBoard(boolean empty) {
+        boardSquares = new ChessBoardSquare[8][8];
+        if (empty) {
+            for (int i = 0; i < boardSquares.length; i++) {
+                for (int k = 0; k < boardSquares[0].length; k++) {
+                    int rank = i + 1;
+                    char file = (char) (k + 97);
+                    ChessBoardSquare cbs = new ChessBoardSquare(file + "" + rank, this);
+                    boardSquares[i][k] = cbs;
+                }
+            }
+
+        }
+    }
 
     public boolean playMove(String move, GameColor player) {
-        if (move.length() == 2) return this.regularPawnMove(move, player, false, false);
+        if (move.equals("0-1") || move.equals("1-0") || move.equals("1/2-1/2")) return true;
+        if (move.length() == 2) return this.regularPawnMove(move, player, false, false, -1);
         else if (move.equals("O-O") || move.equals("O-O-O")) return this.castlingKingMove(move, player);
+        else if (move.length() == 3 && move.contains("+"))
+            return this.regularPawnMove(move.substring(0, 2), player, false, true, -1);
         else if (move.length() == 3) {
             char firstChar = move.charAt(0);
-            if (firstChar == 'N') return this.regularKnightMove(move.substring(1), player, false, false);
-            else if (firstChar == 'R') return this.regularRookMove(move.substring(1), player, false, false);
-            else if (firstChar == 'B') return this.regularBishopMove(move.substring(1), player, false, false);
+            if (move.charAt(2) == '+') return this.regularPawnMove(move.substring(0, 1), player, false, true, -1);
+            else if (firstChar == 'N') return this.regularKnightMove(move.substring(1), player, false, false, -1, -1);
+            else if (firstChar == 'R') return this.regularRookMove(move.substring(1), player, false, false, -1, -1);
+            else if (firstChar == 'B') return this.regularBishopMove(move.substring(1), player, false, false, -1, -1);
             else if (firstChar == 'Q') return this.regularQueenMove(move.substring(1), player, false, false);
             else if (firstChar == 'K') return this.regularKingMove(move.substring(1), player, false);
-        } else if (move.length() == 4 && move.charAt(1) == 'x') {
+        } else if (move.length() == 4 && move.contains("x")) {
             char firstChar = move.charAt(0);
-            if (firstChar == 'N') return this.regularKnightMove(move.substring(2), player, true, false);
-            else if (firstChar == 'R') return this.regularRookMove(move.substring(2), player, true, false);
-            else if (firstChar == 'B') return this.regularBishopMove(move.substring(2), player, true, false);
+            if (firstChar == 'N') return this.regularKnightMove(move.substring(2), player, true, false, -1, -1);
+            else if (firstChar == 'R') return this.regularRookMove(move.substring(2), player, true, false, -1, -1);
+            else if (firstChar == 'B') return this.regularBishopMove(move.substring(2), player, true, false, -1, -1);
             else if (firstChar == 'Q') return this.regularQueenMove(move.substring(2), player, true, false);
             else if (firstChar == 'K') return this.regularKingMove(move.substring(2), player, true);
-            else return this.ambiguousPawnMove(move.substring(2), player, true, firstChar, false);
+            else return this.regularPawnMove(move.substring(2), player, true, false, firstChar - 97);
         } else if ((move.length() == 5 || move.length() == 4) && move.charAt(move.length() - 1) == '+') {
             char firstChar = move.charAt(0);
+            int fileSolver = (move.length() == 5 && !move.contains("x")) ? (move.charAt(1) >= 97 ? move.charAt(1) : -1) : -1;
+            int rankSolver = (move.length() == 5 && !move.contains("x")) ? (move.charAt(1) < 97 ? Integer.parseInt(move.substring(1, 2)) : -1) : -1;
             String destinationMove = move.substring(move.length() - 3, move.length() - 1);
             if (firstChar == 'N')
-                return this.regularKnightMove(destinationMove, player, move.contains("x"), true);
-            else if (firstChar == 'R') return this.regularRookMove(destinationMove, player, move.contains("x"), true);
-            else if (firstChar == 'B') return this.regularBishopMove(destinationMove, player, move.contains("x"), true);
+                return this.regularKnightMove(destinationMove, player, move.contains("x"), true, fileSolver, rankSolver);
+            else if (firstChar == 'R')
+                return this.regularRookMove(destinationMove, player, move.contains("x"), true, fileSolver, rankSolver);
+            else if (firstChar == 'B')
+                return this.regularBishopMove(destinationMove, player, move.contains("x"), true, fileSolver, rankSolver);
             else if (firstChar == 'Q') return this.regularQueenMove(destinationMove, player, move.contains("x"), true);
             else if (firstChar == 'K') return this.regularKingMove(destinationMove, player, move.contains("x"));
-            else if (move.length() == 5) return this.ambiguousPawnMove(destinationMove, player, true, firstChar, true);
-            else return this.regularPawnMove(destinationMove, player, move.contains("x"), true);
+            else if (move.length() == 5)
+                return this.regularPawnMove(destinationMove, player, true, true, firstChar - 97);
+            else return this.regularPawnMove(destinationMove, player, move.contains("x"), true, -1);
+        } else if ((move.length() == 4 || move.length() == 5) && !move.contains("x")) {
+            char firstChar = move.charAt(0);
+            int fileSolver = move.length() == 4 ? (move.charAt(1) >= 97 ? move.charAt(1) : -1) : move.charAt(1);
+            int rankSolver = move.length() == 4 ? (move.charAt(1) < 97 ? Integer.parseInt(move.substring(1, 2)) : -1) : Integer.parseInt(move.substring(2, 3));
+            String destinationMove = move.substring(2);
+            if (firstChar == 'N')
+                return this.regularKnightMove(destinationMove, player, false, false, fileSolver, rankSolver);
+            else if (firstChar == 'R')
+                return this.regularRookMove(destinationMove, player, false, false, fileSolver, rankSolver);
+            if (firstChar == 'B')
+                return this.regularBishopMove(destinationMove, player, false, false, fileSolver, rankSolver);
+        } else if (move.length() == 5 && !move.contains("x")) {
+            char firstChar = move.charAt(0);
+            int fileSolver = move.charAt(1);
+            int rankSolver = Integer.parseInt(move.substring(2, 3));
+            String destinationMove = move.substring(3);
+            if (firstChar == 'N')
+                return this.regularKnightMove(destinationMove, player, false, false, fileSolver, rankSolver);
+            else if (firstChar == 'R')
+                return this.regularRookMove(destinationMove, player, false, false, fileSolver, rankSolver);
+            if (firstChar == 'B')
+                return this.regularBishopMove(destinationMove, player, false, false, fileSolver, rankSolver);
+        } else if (move.length() == 5 && move.contains("x")) {
+            char firstChar = move.charAt(0);
+            String destinationMove = move.substring(3);
+            int fileSolver = move.charAt(1) >= 97 ? move.charAt(1) : -1;
+            int rankSolver = move.charAt(1) < 97 ? Integer.parseInt(move.substring(1, 2)) : -1;
+            if (firstChar == 'N')
+                return this.regularKnightMove(destinationMove, player, true, false, fileSolver, rankSolver);
+            else if (firstChar == 'R')
+                return this.regularRookMove(destinationMove, player, true, false, fileSolver, rankSolver);
+            if (firstChar == 'B')
+                return this.regularBishopMove(destinationMove, player, true, false, fileSolver, rankSolver);
         }
         return false;
     }
 
-    private boolean regularPawnMove(String move, GameColor player, boolean taking, boolean attacks) {
+    private boolean regularPawnMove(String move, GameColor player, boolean taking, boolean attacks, int fileSolver) {
         int file = ((int) move.charAt(0)) - 97;
         int rank = Integer.parseInt(move.substring(1)) - 1;
         ChessBoardSquare destinationSquare = this.getBoardSquares()[rank][file];
@@ -111,9 +169,16 @@ public class ChessBoard {
         Pawn currentPawn = null;
         for (Pawn pawn : player == GameColor.WHITE ? this.getWhitePawns() : this.getBlackPawns()) {
             if (pawn.isTaken()) continue;
-            boolean willMove = pawn.isCorrectMove(destinationSquare, taking);
-            if (attacks && !pawn.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare()))
+            if (fileSolver != -1 && pawn.getPieceSquare().getFileCharCode() - 97 != fileSolver) {
                 continue;
+            }
+            if (attacks) {
+                ChessBoard testBoard = this.copy();
+                King attackingTo = player == GameColor.WHITE ? testBoard.getBlackKing() : testBoard.getWhiteKing();
+                if (!attackingTo.isValidAttack(testBoard, testBoard.getBoardSquares()[pawn.getPieceSquare().getRank() - 1][pawn.getPieceSquare().getFileCharCode() - 97].getCurrentPiece(), testBoard.getBoardSquares()[destinationSquare.getRank() - 1][destinationSquare.getFileCharCode() - 97], taking))
+                    continue;
+            }
+            boolean willMove = pawn.isCorrectMove(destinationSquare, taking);
             if (willMove) {
                 pawnMoveCounts++;
                 currentPawn = pawn;
@@ -126,32 +191,7 @@ public class ChessBoard {
         return false;
     }
 
-    private boolean ambiguousPawnMove(String move, GameColor player, boolean taking, int file, boolean attacks) {
-        int destinationFile = ((int) move.charAt(0)) - 97;
-        int rank = Integer.parseInt(move.substring(1)) - 1;
-        ChessBoardSquare destinationSquare = this.getBoardSquares()[rank][destinationFile];
-        int pawnMoveCounts = 0;
-        Pawn currentPawn = null;
-        for (Pawn pawn : player == GameColor.WHITE ? this.getWhitePawns() : this.getBlackPawns()) {
-            if (pawn.isTaken()) continue;
-            if (pawn.getPieceSquare().getFileCharCode() == file) {
-                boolean willMove = pawn.isCorrectMove(destinationSquare, taking);
-                if (attacks && !pawn.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare()))
-                    continue;
-                if (willMove) {
-                    pawnMoveCounts++;
-                    currentPawn = pawn;
-                }
-            }
-        }
-        if (pawnMoveCounts == 1) {
-            currentPawn.move(destinationSquare, taking);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean regularKnightMove(String move, GameColor player, boolean taking, boolean attacks) {
+    private boolean regularKnightMove(String move, GameColor player, boolean taking, boolean attacks, int fileSolver, int rankSolver) {
         int file = ((int) move.charAt(0)) - 97;
         int rank = Integer.parseInt(move.substring(1)) - 1;
         ChessBoardSquare destinationSquare = this.getBoardSquares()[rank][file];
@@ -159,9 +199,19 @@ public class ChessBoard {
         Knight currentKnight = null;
         for (Knight knight : player == GameColor.WHITE ? this.getWhiteKnights() : this.getBlackKnights()) {
             if (knight.isTaken()) continue;
-            boolean willMove = knight.isCorrectMove(destinationSquare, taking);
-            if (attacks && !knight.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare()))
+            int currentFile = knight.getPieceSquare().getFileCharCode();
+            int currentRank = knight.getPieceSquare().getRank();
+            if (fileSolver != -1 && currentFile != fileSolver) {
                 continue;
+            }
+            if (rankSolver != -1 && currentRank != rankSolver) continue;
+            boolean willMove = knight.isCorrectMove(destinationSquare, taking);
+            if (attacks) {
+                ChessBoard testBoard = this.copy();
+                King attackingTo = player == GameColor.WHITE ? testBoard.getBlackKing() : testBoard.getWhiteKing();
+                if (!attackingTo.isValidAttack(testBoard, testBoard.getBoardSquares()[knight.getPieceSquare().getRank() - 1][knight.getPieceSquare().getFileCharCode() - 97].getCurrentPiece(), testBoard.getBoardSquares()[destinationSquare.getRank() - 1][destinationSquare.getFileCharCode() - 97], taking))
+                    continue;
+            }
             if (willMove) {
                 knightMoveCounts++;
                 currentKnight = knight;
@@ -175,7 +225,7 @@ public class ChessBoard {
         return false;
     }
 
-    private boolean regularRookMove(String move, GameColor player, boolean taking, boolean attacks) {
+    private boolean regularRookMove(String move, GameColor player, boolean taking, boolean attacks, int fileSolver, int rankSolver) {
         int file = ((int) move.charAt(0)) - 97;
         int rank = Integer.parseInt(move.substring(1)) - 1;
         ChessBoardSquare destinationSquare = this.getBoardSquares()[rank][file];
@@ -183,10 +233,18 @@ public class ChessBoard {
         Rook currentRook = null;
         for (Rook rook : player == GameColor.WHITE ? this.getWhiteRooks() : this.getBlackRooks()) {
             if (rook.isTaken()) continue;
-            boolean willMove = rook.isCorrectMove(destinationSquare, taking);
-            if (attacks && !rook.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare())) {
-                continue;
+            int currentFile = rook.getPieceSquare().getFileCharCode();
+            int currentRank = rook.getPieceSquare().getRank();
+            if (fileSolver != -1 && currentFile != fileSolver) continue;
+            if (rankSolver != -1 && currentRank != rankSolver) continue;
+            if (attacks) {
+                ChessBoard testBoard = this.copy();
+                King attackingTo = (player == GameColor.WHITE) ? testBoard.getBlackKing() : testBoard.getWhiteKing();
+                if (!attackingTo.isValidAttack(testBoard, testBoard.getBoardSquares()[rook.getPieceSquare().getRank() - 1][rook.getPieceSquare().getFileCharCode() - 97].getCurrentPiece(), testBoard.getBoardSquares()[destinationSquare.getRank() - 1][destinationSquare.getFileCharCode() - 97], taking)) {
+                    continue;
+                }
             }
+            boolean willMove = rook.isCorrectMove(destinationSquare, taking);
             if (willMove) {
                 rookMoveCounts++;
                 currentRook = rook;
@@ -199,7 +257,7 @@ public class ChessBoard {
         return false;
     }
 
-    private boolean regularBishopMove(String move, GameColor player, boolean taking, boolean attacks) {
+    private boolean regularBishopMove(String move, GameColor player, boolean taking, boolean attacks, int fileSolver, int rankSolver) {
         int file = ((int) move.charAt(0)) - 97;
         int rank = Integer.parseInt(move.substring(1)) - 1;
         ChessBoardSquare destinationSquare = this.getBoardSquares()[rank][file];
@@ -207,9 +265,17 @@ public class ChessBoard {
         Bishop currentBishop = null;
         for (Bishop bishop : player == GameColor.WHITE ? this.getWhiteBishops() : this.getBlackBishops()) {
             if (bishop.isTaken()) continue;
+            int currentFile = bishop.getPieceSquare().getFileCharCode();
+            int currentRank = bishop.getPieceSquare().getRank();
+            if (fileSolver != -1 && currentFile != fileSolver) continue;
+            if (rankSolver != -1 && currentRank != rankSolver) continue;
+            if (attacks) {
+                ChessBoard testBoard = this.copy();
+                King attackingTo = player == GameColor.WHITE ? testBoard.getBlackKing() : testBoard.getWhiteKing();
+                if (!attackingTo.isValidAttack(testBoard, testBoard.getBoardSquares()[bishop.getPieceSquare().getRank() - 1][bishop.getPieceSquare().getFileCharCode() - 97].getCurrentPiece(), testBoard.getBoardSquares()[destinationSquare.getRank() - 1][destinationSquare.getFileCharCode() - 97], taking))
+                    continue;
+            }
             boolean willMove = bishop.isCorrectMove(destinationSquare, taking);
-            if (attacks && !bishop.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare()))
-                continue;
             if (willMove) {
                 bishopMoveCounts++;
                 currentBishop = bishop;
@@ -231,8 +297,11 @@ public class ChessBoard {
             return false;
         }
         boolean willMove = queen.isCorrectMove(destinationSquare, taking);
-        if (attacks && !queen.canAttack(destinationSquare, player == GameColor.WHITE ? this.getBlackKing().getPieceSquare() : this.getWhiteKing().getPieceSquare())) {
-            return false;
+        if (attacks) {
+            ChessBoard testBoard = this.copy();
+            King attackingTo = player == GameColor.WHITE ? testBoard.getBlackKing() : testBoard.getWhiteKing();
+            if (!attackingTo.isValidAttack(testBoard, testBoard.getBoardSquares()[queen.getPieceSquare().getRank() - 1][queen.getPieceSquare().getFileCharCode() - 97].getCurrentPiece(), testBoard.getBoardSquares()[destinationSquare.getRank() - 1][destinationSquare.getFileCharCode() - 97], taking))
+                return false;
         }
         if (willMove) {
             queen.move(destinationSquare, taking);
@@ -262,6 +331,136 @@ public class ChessBoard {
             return true;
         }
         return false;
+    }
+
+
+    public ChessBoard copy() {
+        ChessBoard result = new ChessBoard(true);
+        Map<ChessPiece, ChessPiece> cloneMap = new HashMap<>();
+
+        // --- First, clone all pieces and fill cloneMap ---
+
+        // Took pieces
+        for (ChessPiece p : this.blacksTook) {
+            ChessPiece clone = p.clone(result);
+            result.blacksTook.add(clone);
+            cloneMap.put(p, clone);
+        }
+
+        for (ChessPiece p : this.whitesTook) {
+            ChessPiece clone = p.clone(result);
+            result.whitesTook.add(clone);
+            cloneMap.put(p, clone);
+        }
+
+        // White pieces
+        for (Bishop b : this.whiteBishops) {
+            Bishop clone = b.clone(result);
+            result.whiteBishops.add(clone);
+            cloneMap.put(b, clone);
+        }
+
+        for (Rook r : this.whiteRooks) {
+            Rook clone = r.clone(result);
+            result.whiteRooks.add(clone);
+            cloneMap.put(r, clone);
+        }
+
+        for (Pawn p : this.whitePawns) {
+            Pawn clone = p.clone(result);
+            result.whitePawns.add(clone);
+            cloneMap.put(p, clone);
+        }
+
+        for (Knight k : this.whiteKnights) {
+            Knight clone = k.clone(result);
+            result.whiteKnights.add(clone);
+            cloneMap.put(k, clone);
+        }
+
+        // Black pieces
+        for (Bishop b : this.blackBishops) {
+            Bishop clone = b.clone(result);
+            result.blackBishops.add(clone);
+            cloneMap.put(b, clone);
+        }
+
+        for (Rook r : this.blackRooks) {
+            Rook clone = r.clone(result);
+            result.blackRooks.add(clone);
+            cloneMap.put(r, clone);
+        }
+
+        for (Pawn p : this.blackPawns) {
+            Pawn clone = p.clone(result);
+            result.blackPawns.add(clone);
+            cloneMap.put(p, clone);
+        }
+
+        for (Knight k : this.blackKnights) {
+            Knight clone = k.clone(result);
+            result.blackKnights.add(clone);
+            cloneMap.put(k, clone);
+        }
+
+        // Kings and Queens
+        result.whiteKing = this.whiteKing.clone(result);
+        cloneMap.put(this.whiteKing, result.whiteKing);
+
+        result.blackKing = this.blackKing.clone(result);
+        cloneMap.put(this.blackKing, result.blackKing);
+
+        result.whiteQueen = this.whiteQueen.clone(result);
+        cloneMap.put(this.whiteQueen, result.whiteQueen);
+
+        result.blackQueen = this.blackQueen.clone(result);
+        cloneMap.put(this.blackQueen, result.blackQueen);
+
+        // --- Now copy the boardSquares using the cloned pieces from cloneMap ---
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                ChessPiece originalPiece = this.getBoardSquares()[x][y].getCurrentPiece();
+                if (originalPiece != null) {
+                    ChessPiece clonedPiece = cloneMap.get(originalPiece);
+                    result.getBoardSquares()[x][y].setCurrentPiece(clonedPiece);
+                }
+            }
+        }
+
+        return result;
+    }
+
+
+    public boolean isKingUnderAttack(GameColor color) {
+        for (Pawn p : color == GameColor.WHITE ? this.getBlackPawns() : this.getWhitePawns()) {
+            if (p.isTaken()) continue;
+            boolean t = p.canAttack(p.getPieceSquare(), color == GameColor.WHITE ? this.getWhiteKing().getPieceSquare() : this.getBlackKing().getPieceSquare(), this);
+            if (t) return true;
+        }
+        for (Bishop b : color == GameColor.WHITE ? this.getBlackBishops() : this.getWhiteBishops()) {
+            if (b.isTaken()) continue;
+            boolean t = b.canAttack(b.getPieceSquare(), color == GameColor.WHITE ? this.getWhiteKing().getPieceSquare() : this.getBlackKing().getPieceSquare(), this);
+            if (t) return true;
+        }
+        for (Rook r : color == GameColor.WHITE ? this.getBlackRooks() : this.getWhiteRooks()) {
+            if (r.isTaken()) continue;
+            boolean t = r.canAttack(r.getPieceSquare(), color == GameColor.WHITE ? this.getWhiteKing().getPieceSquare() : this.getBlackKing().getPieceSquare(), this);
+            if (t) return true;
+        }
+        for (Knight k : color == GameColor.WHITE ? this.getBlackKnights() : this.getWhiteKnights()) {
+            if (k.isTaken()) continue;
+            boolean t = k.canAttack(k.getPieceSquare(), color == GameColor.WHITE ? this.getWhiteKing().getPieceSquare() : this.getBlackKing().getPieceSquare(), this);
+            if (t) return true;
+        }
+        if (color == GameColor.WHITE) {
+            if (this.blackQueen.isTaken()) return false;
+            else
+                return this.blackQueen.canAttack(this.blackQueen.getPieceSquare(), getWhiteKing().getPieceSquare(), this);
+        } else {
+            if (this.whiteQueen.isTaken()) return false;
+            else
+                return this.whiteQueen.canAttack(this.whiteQueen.getPieceSquare(), getBlackKing().getPieceSquare(), this);
+        }
     }
 
     public void addWhiteTooks(ChessPiece whiteTook) {

@@ -54,6 +54,7 @@ public class King extends ChessPiece {
 
     @Override
     public boolean isCorrectMove(ChessBoardSquare destinationSquare, boolean taking) {
+
         int currentRank = this.getPieceSquare().getRank();
         int currentFile = this.getPieceSquare().getFileCharCode();
 
@@ -140,6 +141,23 @@ public class King extends ChessPiece {
             }
         }
         return false;
+    }
+
+    public boolean isValidAttack(ChessBoard testBoard, ChessPiece movingPiece, ChessBoardSquare destinationSquare, boolean taking) {
+        if (!movingPiece.isCorrectMove(destinationSquare, taking)) {
+            return false;
+        }
+        if (taking) {
+            destinationSquare.takesCurrentPiece(movingPiece);
+        } else destinationSquare.regularMove(movingPiece);
+        return testBoard.isKingUnderAttack(this.getPieceColor());
+    }
+
+    @Override
+    public King clone(ChessBoard chessBoard) {
+        King result = new King(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
     }
 
     public boolean isUnderAttack() {

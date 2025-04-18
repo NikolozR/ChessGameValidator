@@ -22,7 +22,9 @@ public class ChessBoardSquare {
     }
 
     public void regularMove(ChessPiece newCurrentPiece) {
-        this.setCurrentPiece(null);
+        ChessBoardSquare old = newCurrentPiece.getPieceSquare();
+        old.setCurrentPiece(null);
+        this.chessBoard.getBoardSquares()[old.getRank() - 1][old.getFileCharCode() - 97] = old;
         this.setCurrentPiece(newCurrentPiece);
         newCurrentPiece.setPieceSquare(this);
     }

@@ -1,5 +1,3 @@
-import java.util.Objects;
-
 public class Queen extends ChessPiece {
 
     public Queen(GameColor pieceColor, ChessBoardSquare pieceSquare, ChessBoard chessboard) {
@@ -13,9 +11,16 @@ public class Queen extends ChessPiece {
         return rook.isCorrectMove(destinationSquare, taking) || bishop.isCorrectMove(destinationSquare, taking);
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
         Rook rook = new Rook(this.getPieceColor(), this.getPieceSquare(), this.getChessboard());
         Bishop bishop = new Bishop(this.getPieceColor(), this.getPieceSquare(), this.getChessboard());
-        return rook.canAttack(startingSquare, destinationSquare) || bishop.canAttack(startingSquare, destinationSquare);
+        return rook.canAttack(startingSquare, destinationSquare, chessBoard) || bishop.canAttack(startingSquare, destinationSquare, chessBoard);
+    }
+
+    @Override
+    public Queen clone(ChessBoard chessBoard) {
+        Queen result = new Queen(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
     }
 }

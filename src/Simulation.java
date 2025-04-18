@@ -20,8 +20,11 @@ public class Simulation {
 
     public void simulate() {
         tokenizedGameHistory.forEach((key, val) -> {
+
             try {
                 this.simulateSingleGame(key, val);
+                System.out.println("Game #" + key + " was simulated correctly!");
+                this.setBoard(new ChessBoard());
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println("Moving on the next game...");

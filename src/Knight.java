@@ -27,7 +27,14 @@ public class Knight extends ChessPiece {
         }
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+    @Override
+    public Knight clone(ChessBoard chessBoard) {
+        Knight result = new Knight(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
+    }
+
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
         if (Objects.equals(this.getPieceSquare().getCoordinates(), destinationSquare.getCoordinates())) return false;
         else {
             int currentFile = startingSquare.getFileCharCode();

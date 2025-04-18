@@ -34,24 +34,35 @@ public class Rook extends ChessPiece {
                 return this.canTake(destinationSquare, this.getPieceColor()) && this.canMoveVertically(destinationSquare);
             }
             // if not taking then destination should be empty
-            else return destinationSquare.isSquareEmpty() && this.canMoveVertically(destinationSquare);
+            else {
+                return destinationSquare.isSquareEmpty() && this.canMoveVertically(destinationSquare);
+            }
         } else if (this.getPieceSquare().getRank() == destinationSquare.getRank()) {
             if (taking)
                 return this.canTake(destinationSquare, this.getPieceColor()) && this.canMoveHorizontally(destinationSquare);
-            else return destinationSquare.isSquareEmpty() && this.canMoveHorizontally(destinationSquare);
+            else {
+                return destinationSquare.isSquareEmpty() && this.canMoveHorizontally(destinationSquare);
+            }
         } else {
             // neither file nor rank is the same (Rook should move with 90 degree)
             return false;
         }
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare) {
+    @Override
+    public Rook clone(ChessBoard chessBoard) {
+        Rook result = new Rook(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
+    }
+
+    public boolean canAttack(ChessBoardSquare startingSquare, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
         if (startingSquare.getFileCharCode() == destinationSquare.getFileCharCode() && startingSquare.getRank() != destinationSquare.getRank()) {
             int currentRankIndex = startingSquare.getRank() - 1;
             int destinationRankIndex = destinationSquare.getRank() - 1;
             int fileIndex = destinationSquare.getFileCharCode() - 97;
             for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
-                ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
+                ChessBoardSquare currentSquare = chessBoard.getBoardSquares()[i][fileIndex];
                 if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), startingSquare.getCoordinates()) && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {
                     return false;
                 }
@@ -75,6 +86,12 @@ public class Rook extends ChessPiece {
         int currentRankIndex = this.getPieceSquare().getRank() - 1;
         int destinationRankIndex = destinationSquare.getRank() - 1;
         int fileIndex = destinationSquare.getFileCharCode() - 97;
+        if (this.getPieceSquare().getCoordinates().equals("d6")) {
+            System.out.println(currentRankIndex);
+            System.out.println(destinationRankIndex);
+            System.out.println(fileIndex);
+            System.out.println("WHERE IS IT " + this.getChessboard().getBoardSquares()[5][3].isSquareEmpty());
+        }
         for (int i = Math.min(currentRankIndex, destinationRankIndex) + 1; i < Math.max(currentRankIndex, destinationRankIndex); i++) {
             ChessBoardSquare currentSquare = this.getChessboard().getBoardSquares()[i][fileIndex];
             if (!currentSquare.isSquareEmpty() && !Objects.equals(currentSquare.getCoordinates(), this.getPieceSquare().getCoordinates())) {

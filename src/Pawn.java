@@ -45,7 +45,7 @@ public class Pawn extends ChessPiece {
         }
     }
 
-    public boolean canAttack(ChessBoardSquare startingSquar, ChessBoardSquare destinationSquare) {
+    public boolean canAttack(ChessBoardSquare startingSquar, ChessBoardSquare destinationSquare, ChessBoard chessBoard) {
         return Math.abs(destinationSquare.getFileCharCode() - startingSquar.getFileCharCode()) == 1
                 && destinationSquare.getRank() + (this.getPieceColor() == GameColor.WHITE ? -1 : 1) == startingSquar.getRank();
     }
@@ -72,6 +72,10 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canWhitePawnMoveFirstMove(ChessBoardSquare destinationSquare) {
+        if (destinationSquare.getRank() - 2 == this.getPieceSquare().getRank()) {
+            if (!this.getChessboard().getBoardSquares()[destinationSquare.getRank() - 2][this.getPieceSquare().getFileCharCode() - 97].isSquareEmpty())
+                return false;
+        }
         return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 &&
@@ -86,6 +90,10 @@ public class Pawn extends ChessPiece {
     }
 
     private boolean canBlackPawnMoveFirstMove(ChessBoardSquare destinationSquare) {
+        if (destinationSquare.getRank() + 2 == this.getPieceSquare().getRank()) {
+            if (!this.getChessboard().getBoardSquares()[destinationSquare.getRank()][this.getPieceSquare().getFileCharCode() - 97].isSquareEmpty())
+                return false;
+        }
         return destinationSquare.isSquareEmpty()
                 && (destinationSquare.getFile() == this.getPieceSquare().getFile())
                 &&
@@ -97,5 +105,11 @@ public class Pawn extends ChessPiece {
         this.hasMoved = hasMoved;
     }
 
+    @Override
+    public Pawn clone(ChessBoard chessBoard) {
+        Pawn result = new Pawn(this.getPieceColor(), this.getPieceSquare(), chessBoard);
+        result.setTaken(this.isTaken());
+        return result;
+    }
 
 }
